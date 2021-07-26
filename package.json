@@ -1,0 +1,31 @@
+{
+  "name": "gydo.js-dev",
+  "version": "0.1.86",
+  "description": "The dev branch of 'gydo-js'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "djs",
+    "bot-djs",
+    "dev",
+    "gydo"
+  ],
+  "author": "Gydo Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "discord.js": "^12.5.3"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gydo-Team/gydo.js-dev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gydo-Team/gydo.js-dev/issues"
+  },
+  "homepage": "https://github.com/Gydo-Team/gydo.js-dev#readme"
+}
