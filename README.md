@@ -10,6 +10,8 @@ It will probably receive quite lots of updates, but it will be unstable. Report 
 
 [Main Branch](https://npmjs.com/package/gydo-js)
 
+[Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
+
 ## Setup
 
 ```js 
