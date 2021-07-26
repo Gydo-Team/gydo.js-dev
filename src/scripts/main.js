@@ -274,6 +274,7 @@ class gydo {
             }
         })
     }
+    
     /**
      * A Loop Status for your Discord Bot
      * @param {Object} Status
@@ -305,11 +306,11 @@ class gydo {
         // Sets the Changing Status Loop
         client.on("ready", async () => {
             let index = 0
-            let arr = this.object
+            let arr = object
             setInterval(() => {
                 if(index === arr.length) index = 0;
                 const res = arr[index]
-                client.user.setActivity(res, { type: this.type })
+                client.user.setActivity(res, { type: `${this.type}` })
                 index++;
             }, this.time);
         });
