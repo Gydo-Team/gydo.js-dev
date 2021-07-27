@@ -4,7 +4,6 @@
     <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server"/></a>
     <a href="https://npmjs.com/package/gydo.js-dev"><img src="https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm" alt="npm gydo" />
   </p>
-  <br />
 </div>
 
 # Gydo.JS (Gydo-JS) Dev Branch
@@ -17,6 +16,16 @@ It will probably receive quite lots of updates, but it will be unstable. Report 
 Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 [Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
+
+# Jump to Pages(Table of Contents)
+
+- [Setup](#setup)
+  - [Create a Command](#creating a command)
+  - [Status](#status)
+- [Member Leave Message](#memberleaveevent)
+- [Member Join Message](#joinmessageevent)
+- [Client](#client)
+- [Links](#links)
 
 ## Setup
 
@@ -168,7 +177,7 @@ Client Functions: <br />
 `client.ping` returns the bots ping. <br />
 `client.guildJoinedSize` returns a number of how many guilds your bot are in. <br />
 
-## Link(s)
+## Links
 Report the bugs on our Discord Server! <br />
 
 [Gydo-JS Discord Server](https://discord.gg/s5UcwZTzKg)
