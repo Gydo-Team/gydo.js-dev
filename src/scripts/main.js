@@ -286,6 +286,8 @@ class gydo {
         this.time = time
         this.type = type
         
+        const stat = this.type
+        
         let types = [
             "PLAYING",
             "STREAMING",
@@ -310,7 +312,7 @@ class gydo {
             setInterval(() => {
                 if(index === arr.length) index = 0;
                 const res = arr[index]
-                client.user.setActivity(res, { type: `${this.type}` })
+                client.user.setActivity(res, { type: `${stat}` })
                 index++;
             }, this.time);
         });

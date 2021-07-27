@@ -1,6 +1,6 @@
 {
   "name": "gydo.js-dev",
-  "version": "0.1.86",
+  "version": "0.1.88",
   "description": "The dev branch of 'gydo-js'",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "djs",
     "bot-djs",
     "dev",
-    "gydo"
+    "gydo",
+    "discordbot"
   ],
   "author": "Gydo Team",
   "license": "Apache-2.0",

@@ -1,14 +1,20 @@
-# Gydo.JS (Gydo-JS) Dev Branch
+<div align="center">
+  <br />
+  <p>
+    <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server"/></a>
+    <a href="https://npmjs.com/package/gydo.js-dev"><img src="https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm" alt="npm gydo" />
+  </p>
+  <br />
+</div>
 
-![npm](https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm)
-![Discord](https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord)
+# Gydo.JS (Gydo-JS) Dev Branch
 
 The Dev branch of Gydo-JS
 (Unstable Branch)
 
 It will probably receive quite lots of updates, but it will be unstable. Report bugs in our [Discord Server](https://discord.gg/s5UcwZTzKg)
 
-[Main Branch](https://npmjs.com/package/gydo-js)
+Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 [Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
 
@@ -126,7 +132,7 @@ Functions: <br />
 `%guildname` returns the Guilds name <br />
 
 
-If the `default` is set to true, It will ignore the custom message and will send this one instesd: `Sad to see you leave MemberTag#0001` <br />
+If the `default` is set to true, It will ignore the custom message and will send this one instead: `Sad to see you leave MemberTag#0001` <br />
 
 
 If set to false it will ignore the default message and will send the custom one. <br />
