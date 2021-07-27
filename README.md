@@ -20,7 +20,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 # Jump to Pages(Table of Contents)
 
 - [Setup](#setup)
-  - [Create a Command](#creating a command)
+  - [Create a Command](#creatingacommand)
   - [Status](#status)
 - [Member Leave Message](#memberleaveevent)
 - [Member Join Message](#joinmessageevent)
@@ -100,6 +100,8 @@ bot.cmd("ping", "Pong! ({ping}ms)")
 
 `{bot-user-id}` - Sends the ID of your Bot <br />
 
+`{guildname}` - Sends the Guild's name <br />
+
 Since this is the Dev branch, there is unfortunately, no documentation for this, _yet._
 
 ### Status
@@ -137,16 +139,16 @@ bot.guildMemberRemove({
 ```
 
 Functions: <br />
-`%member` returns the members tag <br />
-`%guildname` returns the Guilds name <br />
+`{member-tag}` - Returns the member's tag <br />
 
+`{member-id}` - Returns the member's ID <br />
+
+`{guildname}` - Returns the Guild's name <br />
 
 If the `default` is set to true, It will ignore the custom message and will send this one instead: `Sad to see you leave MemberTag#0001` <br />
 
 
 If set to false it will ignore the default message and will send the custom one. <br />
-
-More Functions soon 
 
 ### Join Message Event
 
@@ -159,10 +161,15 @@ bot.guildMemberAdd({
 ```
 
 Functions: <br />
-`%member` - Mentions the member that just joined <br />
-`%guildname` - Returns the Guild's name <br />
-`%memberid` - Returns the member's id <br />
-`%guildMemberCount` - Returns the Guild's Member Count (Will Include Bots)
+`{member-tag}` - Return the member's tag <br />
+
+`{member}` - Mentions the member that just joined <br />
+
+`{guildname}` - Returns the Guild's name <br />
+
+`{member-id}` - Returns the member's id <br />
+
+`{guild-memmber-count}` - Returns the Guild's Member Count (Will Include Bots)
 
 # Client 
 

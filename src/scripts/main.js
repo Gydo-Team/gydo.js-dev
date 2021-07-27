@@ -84,11 +84,11 @@ class gydo {
             const welcomeChannel = member.guild.channels.cache.get(this.channel);
             
             const welcome = this.message
-            .split("%memberTag").join(`${member.user.tag}`)
-            .split("%member").join(`<@!` + `${member.user.id}` + `>`)
-            .split("%guildname").join(`${member.guild.name}`)
-            .split("%memberid").join(`${member.user.id}`)
-            .split("%guildMemberCount").join(`${member.guild.memberCount}`)
+            .split("{member-tag}").join(`${member.user.tag}`)
+            .split("{member}").join(`<@!` + `${member.user.id}` + `>`)
+            .split("{guildname}").join(`${member.guild.name}`)
+            .split("{member-id}").join(`${member.user.id}`)
+            .split("{guild-member-count}").join(`${member.guild.memberCount}`)
             
 
             welcomeChannel.send(`${welcome}`)
@@ -130,8 +130,9 @@ class gydo {
             }
             
             const message = this.message
-            .split("%member").join(`${member.user.tag}`)
-            .split("%guildname").join(`${member.guild.name}`)
+            .split("{member-tag}").join(`${member.user.tag}`)
+            .split("{member-id}").join(`${member.user.id}`)
+            .split("{guildname}").join(`${member.guild.name}`)
             
             leaveChannel.send(`${message}`)
         });
@@ -264,6 +265,7 @@ class gydo {
             .split("{message-author-id}").join(`${message.author.id}`)
             .split("{bot-user-tag}").join(`${client.user.tag}`)
             .split("{bot-user-id}").join(`${client.user.id}`)
+            .split("{guildname}").join(`${message.guild.name}`)
     
             try {
                 if(command === client.commands.get(command)) {
