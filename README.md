@@ -75,7 +75,7 @@ To create a command do: <br />
 bot.cmd({
     name: "<cmd name>", 
     code: "<code>"
-})
+});
 ```
 <br />
 
@@ -84,7 +84,10 @@ Every command will start with your prefix like `?ping` <br />
 **Example Command:**
 <br />
 ```js
-bot.cmd("ping", "Pong! ({ping}ms)")
+bot.cmd({ 
+    name: "ping",
+    code: "Pong! ({ping}ms)" 
+});
 ```
 **Functions:**
 <br />

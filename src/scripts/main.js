@@ -4,7 +4,6 @@ const discord = require('discord.js');
 const client = new discord.Client();
 const fs = require("fs");
 const chalk = require("chalk")
-const Client = require("../client")
 
 const MessageEvent = require('../events/message');
 const interpreter = require('./interpreter')
@@ -303,7 +302,6 @@ class gydo {
 }
 
 module.exports = gydo
-exports.Client = Client
 // module.exports = Client
 
 //             OLD CODE
