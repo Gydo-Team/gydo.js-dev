@@ -35,25 +35,6 @@ class gydo {
         });
     }
     
-    // Ping command
-    /**
-     * @returns Clients Ping
-     */
-    ping() {
-        client.on('message', (message) => {
-            const prefix = this.prefix
-            const args = message.content.slice(prefix.length).trim().split(/ +/);
-            const command = args.shift().toLowerCase();
-
-            if(command === "ping") {
-                message.channel.send(`Pinging...`).then((msg) => {
-                    msg.edit(`Pong! ${client.ws.ping}ms`)
-                })
-            }
-            
-        })
-    }
-    
     /**
      * A Welcome Message (guildMemberAdd Event)
      * @param {string<message>} Message
@@ -232,16 +213,16 @@ class gydo {
      * @param {String|Object}
      * @returns {String} Code
      */
-    cmd(name, code) {
-        if(!name) throw new Error(`CMD_NAME_EMPTY`)
+    cmd(cmd) {
+        if(!cmd.name) throw new Error(`CMD_NAME_EMPTY`)
 
-        if(!code) throw new Error(`CMD_CODE_EMPTY`)
+        if(!cmd.code) throw new Error(`CMD_CODE_EMPTY`)
 
-        if(typeof name !== 'string') throw new Error(`CMD_NAME_NOT_STRING`)
-        if(typeof code !== 'string') throw new Error(`CMD_CODE_NOT_STRING`)
+        if(typeof cmd.name !== 'string') throw new Error(`CMD_NAME_NOT_STRING`)
+        if(typeof cmd.code !== 'string') throw new Error(`CMD_CODE_NOT_STRING`)
 
-        client.commands.set(name, name);
-        client.cmdcode.set(name, code);
+        client.commands.set(cmd.name, cmd.name);
+        client.cmdcode.set(cmd.name, cmd.code);
     }
 
     /**

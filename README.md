@@ -17,14 +17,13 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 [Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
 
-# Jump to Pages(Table of Contents)
+## Jump to Pages (Table of Contents)
 
 - [Setup](#setup)
-  - [Create a Command](#creatingacommand)
+  - [Create a Command](#commands)
   - [Status](#status)
 - [Member Leave Message](#memberleaveevent)
 - [Member Join Message](#joinmessageevent)
-- [Client](#client)
 - [Links](#links)
 
 ## Setup
@@ -36,10 +35,6 @@ const bot = new gydo({
     token: "<token here>",
     prefix: "<your prefix>"
 });
-
-bot.ping() 
-
-// a simple ping command (e.g `?ping` depends on what your prefix is)
 
 bot.banMember() 
 
@@ -59,7 +54,7 @@ This will depend on your prefix <br />
 If you have for example `!` then It's like this: <br />
 `!ban`
 
-## Creating a command
+## Commands
 
 **If you encounter any bugs, please report it to our** [Discord Server](https://discord.gg/s5UcwZTzKg)
 <br />
@@ -77,7 +72,10 @@ For the command to **actually work**
 
 To create a command do: <br />
 ```js
-bot.cmd("<cmd name>", "<code>")
+bot.cmd({
+    name: "<cmd name>", 
+    code: "<code>"
+})
 ```
 <br />
 
@@ -170,19 +168,6 @@ Functions: <br />
 `{member-id}` - Returns the member's id <br />
 
 `{guild-memmber-count}` - Returns the Guild's Member Count (Will Include Bots)
-
-# Client 
-
-(WARNING: ON BETA, Functions might not be able to work, yet.) <br />
-
-**Clients Ping (Must have the Basic Setup for the bot)** <br />
-
-
-`const client = new gydo.Client` <br />
-
-Client Functions: <br />
-`client.ping` returns the bots ping. <br />
-`client.guildJoinedSize` returns a number of how many guilds your bot are in. <br />
 
 ## Links
 Report the bugs on our Discord Server! <br />
