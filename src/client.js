@@ -8,12 +8,6 @@ class Client {
         this.user = user
     }
 
-    MessageEvent(bot) {
-        client.on("message", async (message) => {
-            if(message.author.bot) return;
-        });
-    }
-    
     static ping = client.ws.ping
 }
 

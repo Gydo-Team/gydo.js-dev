@@ -305,15 +305,13 @@ class gydo {
         if(typeof this.object !== "object") throw new Error(`NOT_ARRAY`);
         if(typeof this.time !== 'number') throw new Error(`TIME_NOT_A_NUMBER`);
         
-        if(this.time < 1000) throw new Error(`LESS_THAN_1000_NOT_ALLOWED`);
-        
         // Sets the Changing Status Loop
         client.on("ready", async () => {
             let index = 0
-            let arr = object
+            let arr = this.object
             setInterval(() => {
                 if(index === arr.length) index = 0;
-                const res = arr[index]
+                const res = arr[index];
                 client.user.setActivity(res, { type: `${stat}` })
                 index++;
             }, this.time);
