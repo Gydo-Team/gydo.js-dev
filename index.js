@@ -4,7 +4,6 @@ const client = new discord.Client();
 
 const MessageEvent = require('./src/events/message')
 const main = require('./src/scripts/main');
-const Client = require('./src/client');
 const interpreter = require('./src/scripts/interpreter');
 
 module.exports = main
