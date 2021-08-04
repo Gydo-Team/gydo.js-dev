@@ -1,6 +1,6 @@
 {
   "name": "gydo.js-dev",
-  "version": "0.1.94",
+  "version": "0.1.96",
   "description": "The dev branch of 'gydo-js'",
   "main": "index.js",
   "scripts": {

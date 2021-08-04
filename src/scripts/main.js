@@ -239,17 +239,23 @@ class gydo {
             
             const code = `${h}`
             
-            const res = code
+            let res = code
             .split("{ping}").join(`${client.ws.ping}`)
             .split("{message-author-tag}").join(`${message.author.tag}`)
             .split("{message-author-id}").join(`${message.author.id}`)
             .split("{bot-user-tag}").join(`${client.user.tag}`)
             .split("{bot-user-id}").join(`${client.user.id}`)
             .split("{guildname}").join(`${message.guild.name}`)
+            
+           const s = res.split("{args").join("")
+            .split(";").join("")
+            .split("}").join(``)
+            
+            const arg = `${args[s]}`
     
             try {
                 if(command === client.commands.get(command)) {
-                    message.channel.send(res)
+                    message.channel.send(s)
                 }
             } catch (err) {
                 console.error(err)
