@@ -232,44 +232,7 @@ class gydo {
      * @returns {String|Object<command>}
      */
     MessageDetect() {
-        client.on('message', message => {
-            const args = message.content.slice(this.prefix.length).trim().split(/ +/);
-            const command = args.shift().toLowerCase();
-            
-            if(message.author.bot) return;
-            
-            // Interpreter 
-            const h = client.cmdcode.get(command)
-            
-            const code = `${h}`
-            
-            let res = code
-            .split("{ping}").join(`${client.ws.ping}`)
-            .split("{message-author-tag}").join(`${message.author.tag}`)
-            .split("{message-author-id}").join(`${message.author.id}`)
-            .split("{bot-user-tag}").join(`${client.user.tag}`)
-            .split("{bot-user-id}").join(`${client.user.id}`)
-            .split("{guildname}").join(`${message.guild.name}`)
-            
-            let s = res.split("{ban").join("")
-            .split(";").join("")
-            .split("}").join(``)
-            
-            if(message.member.hasPermission("BAN_MEMBERS")) {
-                if(!s || !h || !code || !res) return
-                message.guild.members.ban(s).then().catch(err => console.error(err))
-                
-                s = split(`${s}`).join("")
-            }
-    
-            try {
-                if(command === client.commands.get(command)) {
-                    message.channel.send(s)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        })
+        interpreter(client)
     }
     
     /**
@@ -313,10 +276,6 @@ class gydo {
         });
         
         type = { types: type }
-    }
-    
-    MessageInt() {
-        interpreter(client)
     }
 }
 

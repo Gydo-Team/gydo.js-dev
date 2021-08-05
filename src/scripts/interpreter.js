@@ -2,7 +2,7 @@ const fs = require("fs");
 const discord = require("discord.js")
 
 const interpreter = async (client) => {
-    let funcs = fs.readdirSync("../funcs").filter(file => file.endsWith('.js'))
+    //let funcs = fs.readdirSync("../funcs").filter(file => file.endsWith('.js'))
     
     const s = client.botprefix.get("prefix")
     const prefix = `${s}`
