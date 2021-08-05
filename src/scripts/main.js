@@ -11,6 +11,7 @@ const interpreter = require('./interpreter')
 client.commands = new discord.Collection();
 client.cmdcode = new discord.Collection();
 client.botprefix = new discord.Collection();
+client.embed = new discord.Collection();
 
 class gydo {
     /**
@@ -220,11 +221,12 @@ class gydo {
 
         if(!cmd.code) throw new Error(`CMD_CODE_EMPTY`)
 
-        if(typeof cmd.name !== 'string') throw new Error(`CMD_NAME_NOT_STRING`)
-        if(typeof cmd.code !== 'string') throw new Error(`CMD_CODE_NOT_STRING`)
+        if(typeof cmd.name !== 'string') throw new TypeError(`CMD_NAME_NOT_STRING`)
+        if(typeof cmd.code !== 'string') throw new TypeError(`CMD_CODE_NOT_STRING`)
 
         client.commands.set(cmd.name, cmd.name);
         client.cmdcode.set(cmd.name, cmd.code);
+        //client.embed.set(cmd.name, cmd.embed)
     }
 
     /**
@@ -260,8 +262,8 @@ class gydo {
         if(!time) throw new Error(`NO_LOOP_MS_TIME_GIVEN`);
         if(!type) throw new Error(`NO_STATUS_TYPE_GIVEN`)
         
-        if(typeof this.object !== "object") throw new Error(`NOT_ARRAY`);
-        if(typeof this.time !== 'number') throw new Error(`TIME_NOT_A_NUMBER`);
+        if(typeof this.object !== "object") throw new TypeError(`NOT_ARRAY`);
+        if(typeof this.time !== 'number') throw new TypeError(`TIME_NOT_A_NUMBER`);
         
         // Sets the Changing Status Loop
         client.on("ready", async () => {
@@ -276,6 +278,17 @@ class gydo {
         });
         
         type = { types: type }
+    }
+    
+    embed(emb) {
+        let embed = new discord.MessageEmbed()
+        
+        if(!emb.title) throw new Error(`NO_EMBED_TITLE`)
+        if(!emb.desc) throw new Error(`NO_EMBED_DESC`)
+        
+        embed.addField(emb.title, emb.desc, emb.footer)
+        
+        client.embed.set("emb", embed)
     }
 }
 

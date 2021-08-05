@@ -16,6 +16,8 @@ const interpreter = async (client) => {
          const h = client.cmdcode.get(command)
             
         const code = `${h}`
+        
+        const embed = client.embed.get("emb")
             
         let res = code
         .split("{ping}").join(`${client.ws.ping}`)
@@ -27,7 +29,9 @@ const interpreter = async (client) => {
     
         try {
             if(command === client.commands.get(command)) {
-                message.channel.send(res)
+                message.channel.send(res, {
+                    embed: embed || null
+                });
             }
         } catch (err) {
             console.error(err)
