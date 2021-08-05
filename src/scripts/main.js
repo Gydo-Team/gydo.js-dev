@@ -274,7 +274,7 @@ class gydo {
                 const res = arr[index];
                 client.user.setActivity(res, { type: `${stat}` })
                 index++;
-            }, this.time);
+            }, time);
         });
         
         type = { types: type }
@@ -287,8 +287,17 @@ class gydo {
         if(!emb.desc) throw new Error(`NO_EMBED_DESC`)
         
         embed.addField(emb.title, emb.desc)
-        embed.setAuthor(emb.author, emb.authorurl)
+        
+        if(emb.author) {
+            embed.setAuthor(emb.author, emb.authorurl)
+        }
+        
+        if(emb.footer) {
+            embed.setFooter(emb.footer, emb.footerurl)
+        }
+        
         embed.setColor(emb.color)
+        
         if(emb.timestamp == true) {
             embed.setTimestamp()
         }

@@ -119,6 +119,8 @@ const embed = bot.embed({
     authorurl: "<a url here for the authors icon>",
     timestamp: true
     // or w/o the timestamp or set it as false
+    footer: "Footer",
+    footerurl: "<URL>"
 })
 ```
 The Title, and Description is required. Otherwise it'll send an error. <br />
