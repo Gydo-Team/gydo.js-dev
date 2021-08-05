@@ -21,6 +21,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 - [Setup](#setup)
   - [Create a Command](#commands)
+    - [Embed](#embed) 
   - [Status](#status)
 - [Member Leave Message](#memberleaveevent)
 - [Member Join Message](#joinmessageevent)
@@ -86,7 +87,7 @@ Every command will start with your prefix like `?ping` <br />
 ```js
 bot.cmd({ 
     name: "ping",
-    code: "Pong! ({ping}ms)" 
+    code: "Pong! ({ping}ms)"
 });
 ```
 **Functions:**
@@ -105,6 +106,32 @@ bot.cmd({
 
 Since this is the Dev branch, there is unfortunately, no documentation for this, _yet._
 
+### Embed
+
+We finally have embed! <br />
+
+Embed: <br />
+```js
+const embed = bot.embed({
+    title: "Embed Title",
+    desc: "Embed Description",
+    author: "Embed Author",
+    authorurl: "<a url here for the authors icon>",
+    timestamp: true
+    // or w/o the timestamp or set it as false
+})
+```
+The Title, and Description is required. Otherwise it'll send an error. <br />
+
+To send the embed: <br />
+```js
+bot.cmd({
+    name: "embed",
+    code: "embed test",
+    embed: embed
+    // or whatever you named the embed func
+})
+```
 ### Status
 
 ```js 

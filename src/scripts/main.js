@@ -286,7 +286,12 @@ class gydo {
         if(!emb.title) throw new Error(`NO_EMBED_TITLE`)
         if(!emb.desc) throw new Error(`NO_EMBED_DESC`)
         
-        embed.addField(emb.title, emb.desc, emb.footer)
+        embed.addField(emb.title, emb.desc)
+        embed.setAuthor(emb.author, emb.authorurl)
+        embed.setColor(emb.color)
+        if(emb.timestamp == true) {
+            embed.setTimestamp()
+        }
         
         client.embed.set("emb", embed)
     }
