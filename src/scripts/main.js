@@ -10,6 +10,7 @@ const interpreter = require('./interpreter')
 
 client.commands = new discord.Collection();
 client.cmdcode = new discord.Collection();
+client.botprefix = new discord.Collection();
 
 class gydo {
     /**
@@ -27,6 +28,8 @@ class gydo {
         
         if(typeof va.token !== 'string') return console.error(`Token must be a string!`);
         if(typeof va.prefix !== 'string') throw new Error(`PREFIX_NOT_A_STRING`)
+        
+        client.botprefix.set("prefix", this.prefix)
 
         client.login(this.token);
         client.on('ready', async () => {
@@ -235,6 +238,7 @@ class gydo {
             
             if(message.author.bot) return;
             
+            // Interpreter 
             const h = client.cmdcode.get(command)
             
             const code = `${h}`
@@ -247,11 +251,16 @@ class gydo {
             .split("{bot-user-id}").join(`${client.user.id}`)
             .split("{guildname}").join(`${message.guild.name}`)
             
-           const s = res.split("{args").join("")
+            let s = res.split("{ban").join("")
             .split(";").join("")
             .split("}").join(``)
             
-            const arg = `${args[s]}`
+            if(message.member.hasPermission("BAN_MEMBERS")) {
+                if(!s || !h || !code || !res) return
+                message.guild.members.ban(s).then().catch(err => console.error(err))
+                
+                s = split(`${s}`).join("")
+            }
     
             try {
                 if(command === client.commands.get(command)) {
@@ -294,7 +303,7 @@ class gydo {
         // Sets the Changing Status Loop
         client.on("ready", async () => {
             let index = 0
-            let arr = this.object
+            let arr = object
             setInterval(() => {
                 if(index === arr.length) index = 0;
                 const res = arr[index];
@@ -304,6 +313,10 @@ class gydo {
         });
         
         type = { types: type }
+    }
+    
+    MessageInt() {
+        interpreter(client)
     }
 }
 
