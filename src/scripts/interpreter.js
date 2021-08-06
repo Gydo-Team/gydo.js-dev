@@ -4,6 +4,7 @@ const discord = require("discord.js")
 const interpreter = async (client) => {
     //let funcs = fs.readdirSync("../funcs").filter(file => file.endsWith('.js'))
     
+    // Bots Prefix
     const s = client.botprefix.get("prefix")
     const prefix = `${s}`
     
@@ -13,12 +14,14 @@ const interpreter = async (client) => {
         
         if(message.author.bot) return;
         
+        // Getting the code name, and the actual code.
          const h = client.cmdcode.get(command)
             
         const code = `${h}`
         
-        const embed = client.embed.get("emb")
+        const embed = client.embed.get(command)
             
+        // interpreter
         let res = code
         .split("{ping}").join(`${client.ws.ping}`)
         .split("{message-author-tag}").join(`${message.author.tag}`)
@@ -27,6 +30,7 @@ const interpreter = async (client) => {
         .split("{bot-user-id}").join(`${client.user.id}`)
         .split("{guildname}").join(`${message.guild.name}`)
     
+        // Executing the Command
         try {
             if(command === client.commands.get(command)) {
                 message.channel.send(res, {

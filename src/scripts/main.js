@@ -217,6 +217,8 @@ class gydo {
      * @returns {String} Code
      */
     cmd(cmd) {
+        this.cmdname = cmd.name
+        
         if(!cmd.name) throw new Error(`CMD_NAME_EMPTY`)
 
         if(!cmd.code) throw new Error(`CMD_CODE_EMPTY`)
@@ -244,12 +246,6 @@ class gydo {
      * Must be less than 1000 ms
     */
     loopStatus(object, time, type = {}) {
-        this.object = object
-        this.time = time
-        this.type = type
-        
-        const stat = this.type
-        
         let types = [
             "PLAYING",
             "STREAMING",
@@ -262,17 +258,16 @@ class gydo {
         if(!time) throw new Error(`NO_LOOP_MS_TIME_GIVEN`);
         if(!type) throw new Error(`NO_STATUS_TYPE_GIVEN`)
         
-        if(typeof this.object !== "object") throw new TypeError(`NOT_ARRAY`);
-        if(typeof this.time !== 'number') throw new TypeError(`TIME_NOT_A_NUMBER`);
+        if(typeof object !== "object") throw new TypeError(`NOT_ARRAY`);
+        if(typeof time !== 'number') throw new TypeError(`TIME_NOT_A_NUMBER`);
         
         // Sets the Changing Status Loop
         client.on("ready", async () => {
             let index = 0
-            let arr = object
             setInterval(() => {
-                if(index === arr.length) index = 0;
-                const res = arr[index];
-                client.user.setActivity(res, { type: `${stat}` })
+                if(index === object.length) index = 0;
+                const res = object[index];
+                client.user.setActivity(res, { type: type })
                 index++;
             }, time);
         });
@@ -302,7 +297,7 @@ class gydo {
             embed.setTimestamp()
         }
         
-        client.embed.set("emb", embed)
+        client.embed.set(this.cmdname, embed)
     }
 }
 
