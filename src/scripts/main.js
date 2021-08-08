@@ -13,6 +13,8 @@ client.cmdcode = new discord.Collection();
 client.botprefix = new discord.Collection();
 client.embed = new discord.Collection();
 
+const { Type } = require("../utils/types")
+
 class gydo {
     /**
      * 
@@ -124,29 +126,24 @@ class gydo {
     
     /**
     * Sets the Status for the Bot
-    * @param {string} Client User Status
-    * @returns {string[options]}
+    * @param {string} Content
+    * @returns {string} Status
     */
-    status(va) {
-        this.status = va.status
+    status(status, type = {}) {
+        this.status = status
+        this.type = type
         if(!this.status) throw new Error(`NO_STATUS_GIVEN`)
-        this.type = va.type
-        if(!this.type) throw new Error(`NO_STATUS_TYPE_GIVEN`);
-        
-        let statTypes = ["PLAYING", "LISTENING", "WATCHING", "STREAMING", "COMPETING"]
-        
-        if(!statTypes.includes(this.type)) throw new Error(`NO_STATUS_TYPE_GIVEN`)
         
         if(typeof this.status !== "string") throw new Error(`NOT_VALID_STATUS`)
-        
-        if(typeof this.type !== "string") throw new Error(`INVALID_STATUS_TYPE`)
-        
-        if(this.status.length < 1) throw new Error(`EMPTY_STATUS`)
         
         client.on("ready", async () => {
             client.user.setActivity(this.status, { type: this.type })
             await console.log(chalk.blue(`Bot's status set to: ${this.status}`))
         });
+        
+        const Types = type.TYPES
+        
+        type = { Types: type }
     }
     
     /**
@@ -246,13 +243,6 @@ class gydo {
      * Must be less than 1000 ms
     */
     loopStatus(object, time, type = {}) {
-        let types = [
-            "PLAYING",
-            "STREAMING",
-            "LISTENING",
-            "WATCHING"
-        ]
-    
         // Errors 
         if(!object) throw new Error(`NO_STATUS_GIVEN`);
         if(!time) throw new Error(`NO_LOOP_MS_TIME_GIVEN`);
@@ -272,7 +262,9 @@ class gydo {
             }, time);
         });
         
-        type = { types: type }
+        const Types = Type.TYPES
+        
+        type = { Types: type }
     }
     
     embed(emb) {
