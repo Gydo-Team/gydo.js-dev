@@ -129,10 +129,9 @@ Status Types are: <br />
 
 ```js
 bot.guildMemberRemove({
-    message: "Sad to see you leave %member",
+    message: "Sad to see you leave {member-tag}",
     // put any message you want
-    channel: "<CHANNEL ID>",
-    default: false
+    channel: "<CHANNEL ID>"
 });
 ```
 
@@ -143,17 +142,12 @@ Functions: <br />
 
 `{guildname}` - Returns the Guild's name <br />
 
-If the `default` is set to true, It will ignore the custom message and will send this one instead: `Sad to see you leave MemberTag#0001` <br />
-
-
-If set to false it will ignore the default message and will send the custom one. <br />
-
 ### Join Message Event
 
 ```js
 bot.guildMemberAdd({
     // put any message here
-    message: "%memberTag Welcome to %guildname!",
+    message: "{member-tag} Welcome to {guildname}!",
     channel: "<channel ID>"
 });
 ```

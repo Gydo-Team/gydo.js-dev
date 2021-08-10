@@ -5,7 +5,6 @@ const client = new discord.Client();
 const fs = require("fs");
 const chalk = require("chalk")
 
-const MessageEvent = require('../events/message');
 const interpreter = require('./interpreter')
 
 client.commands = new discord.Collection();
@@ -13,7 +12,9 @@ client.cmdcode = new discord.Collection();
 client.botprefix = new discord.Collection();
 client.embed = new discord.Collection();
 
-const { Type } = require("../utils/types")
+const { Type } = require("../utils/types");
+const guildMemberAdd = require("../events/guildMemberAdd");
+const guildMemberRemove = require("../events/guildMemberRemove");
 
 class gydo {
     /**
@@ -42,86 +43,23 @@ class gydo {
     
     /**
      * A Welcome Message (guildMemberAdd Event)
+     * Requires a channel id to return the message
      * @param {string<message>} Message
      * @param {Number<channel>} IDNum
-     * @retuens {channel <message>}
+     * @retuens {channel <message>} Message
     */ 
     guildMemberAdd(va) {
-        if(!va.message) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`)
-        this.message = va.message
-        
-        if(!va.channel) throw new Error(`NO_LEAVE_MESSAGE_CHANNEL`);
-        
-        if(typeof this.message !== 'string') throw new Error(`LEAVE_MESSAGE_NOT_STRING`);
-        
-        if(typeof va.channel !== 'string') throw new Error(`LEAVE_CHANNEL_NOT_VALID`);
-        this.channel = va.channel
-        
-        if(this.message.length < 1) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`);
-        
-        if(this.channel.length < 1) throw new Error(`NO_LEAVE_CHANNEL_ID_GIVEN`)
-        
-        if(this.message == null) return
-        if(this.channel == null) return
-
-
-        if(typeof va.channel !== 'number') return console.error(`Put a valid Channel ID!`)
-        client.on('guildMemberAdd', member => {
-            const welcomeChannel = member.guild.channels.cache.get(this.channel);
-            
-            const welcome = this.message
-            .split("{member-tag}").join(`${member.user.tag}`)
-            .split("{member}").join(`<@!` + `${member.user.id}` + `>`)
-            .split("{guildname}").join(`${member.guild.name}`)
-            .split("{member-id}").join(`${member.user.id}`)
-            .split("{guild-member-count}").join(`${member.guild.memberCount}`)
-            
-
-            welcomeChannel.send(`${welcome}`)
-        });
+        guildMemberAdd(client, va)
     }
     
     /**
      * A leave message (guildMemberRemove Event)
      * @param {string<message>} Message
      * @param {Number<channel>} IDNum
-     * @retuens {channel <message>}
+     * @retuens {channel <message>} Message
     */ 
     guildMemberRemove(va) {
-        if(!va.message) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`)
-        this.message = va.message
-        
-        if(!va.channel) throw new Error(`NO_LEAVE_MESSAGE_CHANNEL`);
-        
-        if(typeof this.message !== 'string') throw new Error(`LEAVE_MESSAGE_NOT_STRING`);
-        
-        if(typeof va.channel !== 'string') throw new Error(`LEAVE_CHANNEL_NOT_VALID`);
-        this.channel = va.channel
-        
-        if(this.message.length < 1) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`);
-        
-        if(this.channel.length < 1) throw new Error(`NO_LEAVE_CHANNEL_ID_GIVEN`)
-        
-        if(this.message == null) return
-        if(this.channel == null) return
-        
-        if(typeof va.default !== 'boolean') throw new Error(`STATEMENT_NOT_BOOLEAN`)
-
-        client.on('guildMemberRemove', member => {
-            const leaveChannel = member.guild.channels.cache.get(this.channel)
-            
-            if(va.default == true) {
-                leaveChannel.send(`Sad to see you leave ${member.user.tag}`)
-                return;
-            }
-            
-            const message = this.message
-            .split("{member-tag}").join(`${member.user.tag}`)
-            .split("{member-id}").join(`${member.user.id}`)
-            .split("{guildname}").join(`${member.guild.name}`)
-            
-            leaveChannel.send(`${message}`)
-        });
+        guildMemberRemove(client, va)
     }
     
     /**
@@ -137,7 +75,7 @@ class gydo {
         if(typeof this.status !== "string") throw new Error(`NOT_VALID_STATUS`)
         
         client.on("ready", async () => {
-            client.user.setActivity(this.status, { type: this.type })
+            client.user.setActivity(this.status, { type: type })
             await console.log(chalk.blue(`Bot's status set to: ${this.status}`))
         });
         

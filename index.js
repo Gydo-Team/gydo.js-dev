@@ -2,7 +2,6 @@ const discord = require('discord.js');
 const fs = require('fs');
 const client = new discord.Client();
 
-const MessageEvent = require('./src/events/message')
 const main = require('./src/scripts/main');
 const interpreter = require('./src/scripts/interpreter');
 
