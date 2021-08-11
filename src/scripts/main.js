@@ -16,7 +16,7 @@ const { Type } = require("../utils/types");
 const guildMemberAdd = require("../events/guildMemberAdd");
 const guildMemberRemove = require("../events/guildMemberRemove");
 
-class gydo {
+class config {
     /**
      * 
      * Simple and needed setup to start the bot
@@ -231,7 +231,7 @@ class gydo {
     }
 }
 
-module.exports = gydo
+exports.config = config
 // module.exports = Client
 
 //             OLD CODE
