@@ -58,9 +58,9 @@ class gydo {
      * @param {Number<channel>} IDNum
      * @retuens {channel <message>} Message
     */ 
-    guildMemberRemove(va) {
+    /*guildMemberRemove(va) {
         guildMemberRemove(client, va)
-    }
+    }*/
     
     /**
     * Sets the Status for the Bot

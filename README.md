@@ -30,7 +30,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 ```js 
 const gydo = require("gydo.js-dev");
-const bot = new gydo({
+const bot = new gydo.config({
     // change the <token here> to your bots token, same with the prefix (you can only do one prefix yet)
     token: "<token here>",
     prefix: "<your prefix>"
