@@ -8,6 +8,7 @@ const interpreter = async (client) => {
     const s = client.botprefix.get("prefix")
     const prefix = `${s}`
     
+
     client.on("message", message => {
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const command = args.shift().toLowerCase();

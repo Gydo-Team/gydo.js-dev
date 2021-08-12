@@ -5,5 +5,5 @@
  * @param {String} Type
 */
 exports.Type = {
-    TYPES: ["PLAYING", "LISTENING", "WATCHING", "STREAMING"]
+    Types: ["PLAYING", "LISTENING", "WATCHING", "STREAMING"]
 }

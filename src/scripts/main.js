@@ -233,7 +233,6 @@ class config {
 
 exports.config = config
 // module.exports = Client
-
 //             OLD CODE
 /*
 client.on('guildMemberAdd', member => {
