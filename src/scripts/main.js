@@ -16,6 +16,7 @@ client.embed = new discord.Collection();
 const { Type } = require("../utils/types");
 const guildMemberAdd = require("../events/guildMemberAdd");
 const guildMemberRemove = require("../events/guildMemberRemove");
+const { Message } = require("discord.js");
 
 class config {
     /**
@@ -24,7 +25,7 @@ class config {
      * @param {string} Clients Token
      * @param {string<Prefix>} Clients Prefix
      */
-    constructor (va) {
+    constructor (va = { token: String, prefix: String }) {
         if(!va.token) throw new Error(`INVALID_TOKEN`);
 
         if(!va.prefix) return console.error(`No Prefix Given!`);
@@ -49,7 +50,7 @@ class config {
      * @param {Number<channel>} IDNum
      * @retuens {channel <message>} Message
     */ 
-    guildMemberAdd(va) {
+    guildMemberAdd(va = { channel: String,  message: Message }) {
         guildMemberAdd(client, va)
     }
     
@@ -59,7 +60,7 @@ class config {
      * @param {Number<channel>} IDNum
      * @retuens {channel <message>} Message
     */ 
-    guildMemberRemove(va) {
+    guildMemberRemove(va = { channel: String, message: Message }) {
         guildMemberRemove(client, va)
     }
     
@@ -68,7 +69,7 @@ class config {
     * @param {string} Content
     * @returns {string} Status
     */
-    status(status, type = {}) {
+    status(status, type = { type: Type.Types }) {
         this.status = status
         this.type = type
         if(!this.status) throw new Error(`NO_STATUS_GIVEN`)
@@ -86,7 +87,7 @@ class config {
      * @param {String|Object}
      * @returns {String} Code
      */
-    cmd(cmd) {
+    cmd(cmd = { name: String, code: String }) {
         this.cmdname = cmd.name
         
         if(!cmd.name) throw new Error(`CMD_NAME_EMPTY`)
@@ -115,7 +116,7 @@ class config {
      * @param {Number} Miliseconds
      * Must be less than 1000 ms
     */
-    loopStatus(object, time, type = {}) {
+    loopStatus(object, time, type = { type: Type.Types }) {
         // Errors 
         if(!object) throw new Error(`NO_STATUS_GIVEN`);
         if(!time) throw new Error(`NO_LOOP_MS_TIME_GIVEN`);
@@ -134,19 +135,17 @@ class config {
                 index++;
             }, time);
         });
-        
-        const Types = Type.TYPES
-        
-        type = { Types: type }
     }
     
     embed(emb) {
         let embed = new discord.MessageEmbed()
         
-        if(!emb.title) throw new Error(`NO_EMBED_TITLE`)
-        if(!emb.desc) throw new Error(`NO_EMBED_DESC`)
+        if(!emb.title) throw new Error(`NO_EMBED_TITLE`);
         
-        embed.addField(emb.title, emb.desc)
+        embed.addField(emb.title)
+        if(emb.desc) {
+            embed.setDescription(emb.desc)
+        }
         
         if(emb.author) {
             embed.setAuthor(emb.author, emb.authorurl)
