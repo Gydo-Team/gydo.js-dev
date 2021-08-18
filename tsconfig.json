@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "lib": ["DOM", "ES6"],
+        "esModuleInterop": true
+    },
+    "exclude": ["node_modules"]
+}

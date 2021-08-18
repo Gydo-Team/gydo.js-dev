@@ -35,24 +35,7 @@ const bot = new gydo.config({
     token: "<token here>",
     prefix: "<your prefix>"
 });
-
-bot.banMember() 
-
-// bans a member stated if the user has permissions to ban
-
-bot.kickMember()
-
-// kicks a member stated if the user has permission to kick
-
 ```
-
-Ban Example: <br />
-`?ban 1837382938293919 no`
-
-This will depend on your prefix <br />
-
-If you have for example `!` then It's like this: <br />
-`!ban`
 
 ## Commands
 
