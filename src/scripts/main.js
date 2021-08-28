@@ -46,9 +46,10 @@ class config {
     /**
      * A Welcome Message (guildMemberAdd Event)
      * Requires a channel id to return the message
-     * @param {string<message>} Message
-     * @param {Number<channel>} IDNum
-     * @retuens {channel <message>} Message
+     * @example bot.guildMemberAdd({
+         channel: "1234567891011",
+         message: "{member} Welcome!"
+     })
     */ 
     guildMemberAdd(va = { channel: String,  message: Message }) {
         guildMemberAdd(client, va)
@@ -56,9 +57,10 @@ class config {
     
     /**
      * A leave message (guildMemberRemove Event)
-     * @param {string<message>} Message
-     * @param {Number<channel>} IDNum
-     * @retuens {channel <message>} Message
+     * @example bot.guildMemberAdd({
+         channel: "1234567891011",
+         message: "{member} Welcome!"
+     })
     */ 
     guildMemberRemove(va = { channel: String, message: Message }) {
         guildMemberRemove(client, va)
@@ -66,8 +68,8 @@ class config {
     
     /**
     * Sets the Status for the Bot
-    * @param {string} Content
-    * @returns {string} Status
+    * @param {String} status
+    * @param {Object} type
     */
     status(status, type = { type: Type.Types }) {
         this.status = status
@@ -84,8 +86,8 @@ class config {
 
     /**
      * Sets a new command for the bot
-     * @param {String|Object}
-     * @returns {String} Code
+     * @param {String} name
+     * @returns {Message} code
      */
     cmd(cmd = { name: String, code: String }) {
         this.cmdname = cmd.name
@@ -104,7 +106,6 @@ class config {
 
     /**
      * Detects the command
-     * @returns {String|Object<command>}
      */
     MessageDetect() {
         interpreter(client)
@@ -112,9 +113,9 @@ class config {
     
     /**
      * A Loop Status for your Discord Bot
-     * @param {Object} Status
-     * @param {Number} Miliseconds
-     * Must be less than 1000 ms
+     * @param {Array<object>} object
+     * @param {Number} time
+     * @example bot.loopStatus(["Hey!", "Hello!", "!help"], 2000, { type: "PLAYING" })
     */
     loopStatus(object, time, type = { type: Type.Types }) {
         // Errors 
@@ -136,7 +137,13 @@ class config {
             }, time);
         });
     }
-    
+
+    /**
+     * Sends a Discord Embed
+     * @example bot.embed({
+         title: "yes",
+     })
+     */
     embed(emb) {
         let embed = new discord.MessageEmbed()
         
@@ -165,4 +172,4 @@ class config {
     }
 }
 
-exports.config = config
+exports.config = config;
