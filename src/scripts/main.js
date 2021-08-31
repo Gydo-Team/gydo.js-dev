@@ -1,10 +1,11 @@
 'use strict';
-exports.__esModule = true;
-
 const discord = require('discord.js');
-const client = new discord.Client();
+const { Intents, Client } = require("discord.js");
+const client = new Client({
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS]
+});
 const fs = require("fs");
-const chalk = require("chalk")
+const chalk = require("chalk");
 
 const interpreter = require('./interpreter')
 
@@ -22,17 +23,22 @@ class config {
     /**
      * 
      * Simple and needed setup to start the bot
-     * @param {string} Clients Token
-     * @param {string<Prefix>} Clients Prefix
+     * @param {string} token
+     * @param {string<Prefix>} prefix
+     * 
+     * @example const bot = new gydo.config({ 
+     *     token: "TOKEN",
+     *     prefix: "!"
+     * });
      */
-    constructor (va = { token: String, prefix: String }) {
+    constructor (va = { token, prefix }) {
         if(!va.token) throw new Error(`INVALID_TOKEN`);
 
         if(!va.prefix) return console.error(`No Prefix Given!`);
         this.prefix = va.prefix
         this.token = va.token
         
-        if(typeof va.token !== 'string') return console.error(`Token must be a string!`);
+        if(typeof va.token !== 'string') throw new Error(`Token must be a string!`);
         if(typeof va.prefix !== 'string') throw new Error(`PREFIX_NOT_A_STRING`)
         
         client.botprefix.set("prefix", this.prefix)
@@ -41,6 +47,14 @@ class config {
         client.on('ready', async () => {
             console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`))
         });
+
+        /**
+         * 
+         * Bot Websocket Ping in Miliseconds 
+         * @returns {Number<ws>} Ping
+         *
+         */
+        this.ping = client.ws.ping;
     }
     
     /**
@@ -59,7 +73,7 @@ class config {
      * A leave message (guildMemberRemove Event)
      * @example bot.guildMemberAdd({
          channel: "1234567891011",
-         message: "{member} Welcome!"
+         message: "Sad to see you leave {member}.."
      })
     */ 
     guildMemberRemove(va = { channel: String, message: Message }) {
@@ -69,7 +83,7 @@ class config {
     /**
     * Sets the Status for the Bot
     * @param {String} status
-    * @param {Object} type
+    * @param {Object<type>} type
     */
     status(status, type = { type: Type.Types }) {
         this.status = status
@@ -101,7 +115,6 @@ class config {
 
         client.commands.set(cmd.name, cmd.name);
         client.cmdcode.set(cmd.name, cmd.code);
-        //client.embed.set(cmd.name, cmd.embed)
     }
 
     /**
@@ -128,7 +141,7 @@ class config {
         
         // Sets the Changing Status Loop
         client.on("ready", async () => {
-            let index = 0
+            let index = 0;
             setInterval(() => {
                 if(index === object.length) index = 0;
                 const res = object[index];
@@ -141,7 +154,7 @@ class config {
     /**
      * Sends a Discord Embed
      * @example bot.embed({
-         title: "yes",
+         title: "Example",
      })
      */
     embed(emb) {
