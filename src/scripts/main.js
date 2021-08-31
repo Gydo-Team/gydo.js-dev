@@ -2,7 +2,7 @@
 const discord = require('discord.js');
 const { Intents, Client } = require("discord.js");
 const client = new Client({
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS]
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENSES]
 });
 const fs = require("fs");
 const chalk = require("chalk");
@@ -44,7 +44,7 @@ class config {
         client.botprefix.set("prefix", this.prefix)
 
         client.login(this.token);
-        client.on('ready', async () => {
+        client.once('ready', async () => {
             console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`))
         });
 
@@ -149,39 +149,6 @@ class config {
                 index++;
             }, time);
         });
-    }
-
-    /**
-     * Sends a Discord Embed
-     * @example bot.embed({
-         title: "Example",
-     })
-     */
-    embed(emb) {
-        let embed = new discord.MessageEmbed()
-        
-        if(!emb.title) throw new Error(`NO_EMBED_TITLE`);
-        
-        embed.addField(emb.title)
-        if(emb.desc) {
-            embed.setDescription(emb.desc)
-        }
-        
-        if(emb.author) {
-            embed.setAuthor(emb.author, emb.authorurl)
-        }
-        
-        if(emb.footer) {
-            embed.setFooter(emb.footer, emb.footerurl)
-        }
-        
-        embed.setColor(emb.color)
-        
-        if(emb.timestamp == true) {
-            embed.setTimestamp()
-        }
-        
-        client.embed.set(this.cmdname, embed)
     }
 }
 
