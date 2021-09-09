@@ -18,7 +18,6 @@ client.embed = new discord.Collection();
 const guildMemberAdd = require("../events/guildMemberAdd");
 const guildMemberRemove = require("../events/guildMemberRemove");
 const { Message, Presence, Channel } = require("discord.js");
-const ClientUser = require("./user");
 
 class config {
     /**
@@ -71,16 +70,6 @@ class config {
          *
          */
         this.ping = client.ws.ping;
-        
-        /** 
-         * Bot's Username
-        */
-        this.username = client.user.username;
-        
-         /** 
-          * Client User, info's about the bot
-         */
-        this.user = new ClientUser(client);
     }
     
     /**

@@ -25,14 +25,6 @@ export class config {
     public removeIntents(int: Intents): Promise<void>;
 }
 
-export class ClientUser {
-    public constructor (client: Client);
-    public readonly id: number;
-    public readonly tag: string | ClientUser;
-    public readonly discriminator: string | ClientUser;
-    public readonly createdAt: Date;
-}
-
 // Interfaces
 export interface IConfig {
     token: string;
