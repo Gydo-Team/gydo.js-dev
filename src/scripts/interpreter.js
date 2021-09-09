@@ -1,4 +1,7 @@
-const fs = require("fs");
+// Interpreter 
+// Detects the messages and see if
+// it matches the command you made
+
 const discord = require("discord.js");
 
 const interpreter = async (client) => {
@@ -12,14 +15,12 @@ const interpreter = async (client) => {
         
         if(message.author.bot) return;
         
-        // Getting the code name, and the actual code.
          const h = client.cmdcode.get(command)
             
         const code = `${h}`
         
         const embed = client.embed.get(command)
             
-        // interpreter
         let res = code
         .split("{ping}").join(`${client.ws.ping}`)
         .split("{message-author-tag}").join(`${message.author.tag}`)
@@ -28,7 +29,6 @@ const interpreter = async (client) => {
         .split("{bot-user-id}").join(`${client.user.id}`)
         .split("{guildname}").join(`${message.guild.name}`)
     
-        // Trying to send a message with a Try-Catch block
         try {
             if(command === client.commands.get(command)) {
                 message.channel.send({

@@ -4,6 +4,7 @@
     <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server"/></a>
     <a href="https://npmjs.com/package/gydo.js-dev"><img src="https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm" alt="npm gydo" />
   </p>
+  <br />
 </div>
 
 # Gydo.JS (Gydo-JS) Dev Branch
@@ -11,7 +12,7 @@
 The Dev branch of Gydo-JS
 (Unstable Branch)
 
-It will probably receive quite lots of updates, but it will be unstable. Report bugs in our [Discord Server](https://discord.gg/s5UcwZTzKg)
+It will probably receive quite lots of updates, _but it will be unstable._ Report bugs in our [Discord Server](https://discord.gg/s5UcwZTzKg)
 
 Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
@@ -21,7 +22,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 - [Setup](#setup)
   - [Create a Command](#commands)
-  - [Status](#status)
+  - [Status](#status) 
 - [Member Leave Message](#memberleaveevent)
 - [Member Join Message](#joinmessageevent)
 - [Links](#links)
@@ -35,7 +36,13 @@ const bot = new gydo.config({
     token: "<token here>",
     prefix: "<your prefix>"
 });
+
+bot.addIntents(262)
 ```
+
+See Intents you need: <br />
+(Important)
+[See DJS v13 Intents](https://discordjs.guide/popular-topics/intents.html)
 
 ## Commands
 
@@ -136,17 +143,21 @@ bot.guildMemberAdd({
 ```
 
 Functions: <br />
-`{member-tag}` - Return the member's tag <br />
+`{member-tag}` - Return the member's tag
 
-`{member}` - Mentions the member that just joined <br />
+`{member}` - Mentions the member that just joined
 
-`{guildname}` - Returns the Guild's name <br />
+`{guildname}` - Returns the Guild's name
 
-`{member-id}` - Returns the member's id <br />
+`{member-id}` - Returns the member's id
 
 `{guild-memmber-count}` - Returns the Guild's Member Count (Will Include Bots)
 
 ## Links
-Report the bugs on our Discord Server! <br />
+Report the bugs on our Discord Server!
 
 [Gydo-JS Discord Server](https://discord.gg/s5UcwZTzKg)
+
+[Main Branch](https://npmjs.com/package/gydo-js)
+
+[Github Repo](https://github.com/Gydo-Team/gydo.js-dev)

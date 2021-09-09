@@ -1,13 +1,16 @@
-const guildMemberAdd = async (client, va) => {
-    if(!va.message) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`)
-        this.message = va.message
+/**
+ * Event for when a memeber leaves, and sends a message if specified
+*/
+const guildMemberAdd = async (client, channel, message) => {
+    if(!message) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`)
+        this.message = message
         
-        if(!va.channel) throw new Error(`NO_LEAVE_MESSAGE_CHANNEL`);
+        if(!channel) throw new Error(`NO_LEAVE_MESSAGE_CHANNEL`);
         
         if(typeof this.message !== 'string') throw new Error(`LEAVE_MESSAGE_NOT_STRING`);
         
-        if(typeof va.channel !== 'string') throw new Error(`LEAVE_CHANNEL_NOT_VALID`);
-        this.channel = va.channel
+        if(typeof channel !== 'string') throw new Error(`LEAVE_CHANNEL_NOT_VALID`);
+        this.channel = channel
         
         if(this.message.length < 1) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`);
         
@@ -17,7 +20,7 @@ const guildMemberAdd = async (client, va) => {
         if(this.channel == null) return
 
 
-        if(typeof va.channel !== 'number') return console.error(`Put a valid Channel ID!`)
+        if(typeof channel !== 'number') return console.error(`Put a valid Channel ID!`)
         client.on('guildMemberAdd', member => {
             const welcomeChannel = member.guild.channels.cache.get(this.channel);
             

@@ -1,8 +1,10 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "lib": ["DOM", "ES6"],
-        "esModuleInterop": true
-    },
-    "exclude": ["node_modules"]
+        "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "module": "commonjs"
+    }, 
+    "exclude": ["node_modules", "package-lock.json"]
 }
