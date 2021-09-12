@@ -22,10 +22,10 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 - [Setup](#setup)
   - [Create a Command](#commands)
-  - [Slash Commands](#slash commands)
+  - [Slash Commands](#slashcommands)
   - [Status](#status) 
-- [Member Leave Message](#member leave event)
-- [Member Join Message](#join message event)
+- [Member Leave Message](#memberleaveevent)
+- [Member Join Message](#joinmessageevent)
 - [Links](#links)
 
 ## Setup
