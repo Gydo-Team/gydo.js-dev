@@ -22,9 +22,10 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 - [Setup](#setup)
   - [Create a Command](#commands)
+  - [Slash Commands](#slash commands)
   - [Status](#status) 
-- [Member Leave Message](#memberleaveevent)
-- [Member Join Message](#joinmessageevent)
+- [Member Leave Message](#member leave event)
+- [Member Join Message](#join message event)
 - [Links](#links)
 
 ## Setup
@@ -37,12 +38,18 @@ const bot = new gydo.config({
     prefix: "<your prefix>"
 });
 
-bot.addIntents(262)
 ```
 
+You will automatically have this intents:
+`GUILDS`
+`GUILD_MESSAGES`
+
+Which is enough, and what is required.
+
 See Intents you need: <br />
-(Important)
 [See DJS v13 Intents](https://discordjs.guide/popular-topics/intents.html)
+
+Once you've completed the setup, you can run `node .` (or `node <filename>.js`) in your terminal to run the bot.
 
 ## Commands
 
@@ -94,6 +101,32 @@ bot.cmd({
 `{guildname}` - Sends the Guild's name <br />
 
 Since this is the Dev branch, there is unfortunately, no documentation for this, _yet._
+
+## Slash Commands
+
+Make sure your bot has the permission to create slash commands 
+
+Simple Ping Slash Command:
+```js
+bot.slashCommand({
+    name: "ping",
+    description: "a simple ping command",
+    code: "pong",
+    // optional
+    guildId: "1234567890"
+});
+```
+
+You can also put `{ping}` inside `code: ""` to get the bots ping.
+
+If you want your slash command to only be created on a specific server, then you can put the server's guild ID in `guildId`
+
+To detect the slash command: <br />
+```js
+bot.slashCommandDetect("ping")
+```
+
+You will have to do `bot.slashCommandDetect("<slashCommandName>")` to detect the slash commands you've created, otherwise the bot will say `"interaction failed"`
 
 ### Status
 
@@ -154,7 +187,7 @@ Functions: <br />
 `{guild-memmber-count}` - Returns the Guild's Member Count (Will Include Bots)
 
 ## Links
-Report the bugs on our Discord Server!
+Report the bugs on our Discord Server, and/or to our GitHub Repository.
 
 [Gydo-JS Discord Server](https://discord.gg/s5UcwZTzKg)
 

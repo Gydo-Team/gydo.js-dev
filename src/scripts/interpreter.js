@@ -6,20 +6,21 @@ const discord = require("discord.js");
 
 const interpreter = async (client) => {
     const s = client.botprefix.get("prefix")
-    const prefix = `${s}`
-    
 
-    client.on("messageCreate", message => {
+    const prefix = `${s}`
+
+        
+    client.on("messageCreate", (message) => {
+        const prefix = "?";
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
         
-        if(message.author.bot) return;
-        
-         const h = client.cmdcode.get(command)
+        const h = client.cmdcode.get(command)
+
+        const cmdName = client.commands.get(command)
+
             
         const code = `${h}`
-        
-        const embed = client.embed.get(command)
             
         let res = code
         .split("{ping}").join(`${client.ws.ping}`)
@@ -29,14 +30,10 @@ const interpreter = async (client) => {
         .split("{bot-user-id}").join(`${client.user.id}`)
         .split("{guildname}").join(`${message.guild.name}`)
     
-        try {
-            if(command === client.commands.get(command)) {
-                message.channel.send({
-                    content: res
-                });
-            }
-        } catch (err) {
-            console.error(err)
+        if(command === cmdName) {
+            message.channel.send({
+                content: res
+            });
         }
     });
 }

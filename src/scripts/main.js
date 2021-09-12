@@ -1,22 +1,27 @@
 'use strict';
 const discord = require('discord.js');
-const { Intents, Client } = require("discord.js");
+const { Intents, Client, MessageEmbed } = require("discord.js");
 const intents = new Intents();
 const client = new Client({
-    intents: intents
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        intents
+    ]
 });
 const fs = require("fs");
 const chalk = require("chalk");
-
-const interpreter = require('./interpreter')
 
 client.commands = new discord.Collection();
 client.cmdcode = new discord.Collection();
 client.botprefix = new discord.Collection();
 client.embed = new discord.Collection();
+client.slashName = new discord.Collection();
+client.slashCode = new discord.Collection();
 
 const guildMemberAdd = require("../events/guildMemberAdd");
 const guildMemberRemove = require("../events/guildMemberRemove");
+const interpreter = require("./interpreter");
 const { Message, Presence, Channel } = require("discord.js");
 
 class config {
@@ -32,9 +37,6 @@ class config {
      *     token: "TOKEN",
      *     prefix: "!"
      * });
-     * 
-     * // Basic Intents
-     * bot.addIntents(262)
      */
     constructor ({ token, prefix }) {
         if(!token) throw new Error(`INVALID_TOKEN`);
@@ -58,8 +60,8 @@ class config {
         
         client.botprefix.set("prefix", this.prefix)
 
-        client.login(this.token);
-        client.once('ready', async () => {
+        client.login(token);
+        client.on('ready', async () => {
             console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`))
         });
 
@@ -102,7 +104,7 @@ class config {
     }
     
     /** 
-     * @typedef {Object} ActivityTypes 
+     * @typedef {object} ActivityTypes 
      * @property {"PLAYING"|"LISTENING"|"WATCHING"|"COMPETING"|"STREAMING"} type
     */
     
@@ -140,7 +142,7 @@ class config {
      })
      */
     cmd({ name, code }) {
-        this.cmdname = name
+        this.cmdname = name;
         
         if(!name) throw new Error(`CMD_NAME_EMPTY`)
 
@@ -158,7 +160,7 @@ class config {
      * (Must have the right Intents)
      */
     MessageDetect() {
-        interpreter(client)
+        interpreter(client);
     }
     
     /**
@@ -210,6 +212,75 @@ class config {
         if(!int) throw new TypeError("No Intents Given");
         
         intents.remove(int)
+    }
+    
+    /** 
+     * Detect a Slash Command
+     * @param {string} slashCommand
+    */
+    slashCommandDetect(slashCommand) {
+        client.on("interactionCreate", async (interaction) => {
+            if(!interaction.isCommand()) return;
+            
+            const { commandName, options } = interaction;
+            
+            const r = client.slashCode.get(slashCommand);
+            const s = `${r}`
+            const res = s
+            .split(`{ping}`).join(`${client.ws.ping}`)
+            
+            try {
+                if(commandName === slashCommand) {
+                    interaction.reply({
+                        content: res,
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+    
+    /**
+     * @typedef {object} ISlashCMD
+     * @property {string} name
+     * @property {string} description
+     * @property {string} code 
+     * @property {string} [guildId]
+    */
+    
+    /** 
+     * Discord Slash Commands
+     * @param {ISlashCMD} command
+    */
+    slashCommand(command = { name, description, code, guildId }) {
+        if(!command.name) throw new Error(`No Slash Command Name`);
+        if(!command.description) throw new Error(`No Slash Command Description`);
+        if(!command.code) throw new Error(`No Slash Command Code`);
+        
+        this._slashName = command.name;
+        this._slashDesc = command.description;
+        this._slashCode = command.code;
+        this._slashGuildId = command.guildId;
+        
+        client.once('ready', () => {
+            const guild = client.guilds.cache.get(command.guildId);
+
+            let commands;
+            if(guild) {
+                commands = guild.commands;
+            } else {
+                commands = client.application?.commands;
+            }
+            
+            commands?.create({
+                name: this._slashName,
+                description: this._slashDesc
+            });
+        });
+        
+        client.slashName.set(this._slashName, this._slashName);
+        client.slashCode.set(this._slashName, this._slashCode);
     }
 }
 
