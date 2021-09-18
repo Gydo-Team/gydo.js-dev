@@ -100,6 +100,19 @@ bot.cmd({
 
 `{guildname}` - Sends the Guild's name <br />
 
+**Args**
+`{args;<num>}`
+
+You can `<num>` with a number.
+
+Example: 
+
+Code: `{args;0}` <br />
+Message sent by user: "!example gydo" <br />
+Output: `gydo` <br />
+
+Raw Args Output: `["gydo"]`
+
 Since this is the Dev branch, there is unfortunately, no documentation for this, _yet._
 
 ## Slash Commands
@@ -121,12 +134,40 @@ You can also put `{ping}` inside `code: ""` to get the bots ping.
 
 If you want your slash command to only be created on a specific server, then you can put the server's guild ID in `guildId`
 
+If you want it so only the user who created the interaction can see it, add the property in `slashCommand({})`: `ephemeral: true`
+
 To detect the slash command: <br />
 ```js
 bot.slashCommandDetect("ping")
 ```
 
 You will have to do `bot.slashCommandDetect("<slashCommandName>")` to detect the slash commands you've created, otherwise the bot will say `"interaction failed"`
+
+Simple Add Command:
+
+```js
+bot.slashCommand({
+    name: "add",
+    description: "A Simple add command",
+    code: `The Answer is: ${bot.getSlashOptionNumber('num1') + bot.getSlashOptionNumber('num2')}`,
+    options: [
+        {
+            name: 'num1',
+            description: "First Number",
+            required: true,
+            type: bot.slashCommandOptionTypes.NUMBER
+        },
+        {
+            name: 'num2',
+            description: 'Second Number',
+            required: true,
+            type: bot.slashCommandOptionTypes.NUMBER
+        }
+    ]
+});
+
+bot.slashCommandDetect("add");
+```
 
 ### Status
 

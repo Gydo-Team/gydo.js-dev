@@ -5,16 +5,21 @@ import {
     Presence,
     Channel,
     ClientPresenceStatus,
-    Intents
+    Intents,
+    Constants,
+    User,
+    GuildMember,
+    Role
 } from "discord.js";
 
 //#region Class(es)
 export class config {
     public constructor (va: IConfig);
     public readonly ping: number;
-    private readonly token: string | Client;
+    private readonly token: string;
     public prefix: string;
-    public readonly username: string;
+    public readonly id: number;
+    public readonly tag: string;
     public guildMemberAdd(va: IGuildMember): Message;
     public guildMemberRemove(va: IGuildMember): Message;
     public readonly currentStatus: string;
@@ -28,8 +33,22 @@ export class config {
     private readonly _slashDesc: string;
     private readonly _slashCode: string;
     private readonly _slashGuildId: string | Channel;
-    public slashCommandDetect(slashCommand:string): Message;
+    private readonly _slashOptions: ICMDSlashOptions[];
+    private readonly _slashEphemeral: boolean;
+    public slashCommandDetect(slashCommand:string): Promise<Message>;
     public slashCommand(command: ISlashCMD): void;
+    public slashCommandOptionTypes: typeof Constants;
+    public getSlashOptionNumber(target: string): number;
+    public getSlashOptionString(target: string): string;
+    public getSlashOptionBoolean(target: string): boolean;
+    public getSlashOptionChannel(target: string): Channel;
+    public getSlashOptionMember(target: string): GuildMember;
+    public getSlashOptionUser(target: string): User;
+    public getSlashOptionInteger(target: string): number;
+    public getSlashOptionRole(target: string): Role;
+    public getSlashOptionMentionable(target: string): string;
+    public toJSON(): JSON;
+    public setNormalStatus(status: NormalStatusTypes): Presence<Client>;
 }
 
 // Interfaces
@@ -43,24 +62,43 @@ export interface IGuildMember {
     message: Message;
 }
 
-export interface ActivityTypes {
-    type: "PLAYING" 
-    | "LISTENING" 
-    | "STREAMING" 
-    | "WATCHING" 
+export type ActivityOptions = 
+    | "PLAYING" 
+    | "LISTENING"
+    | "STREAMING"
+    | "WATCHING"
     | "COMPETING";
+    
+export type NormalStatusTypes =
+    | 'idle'
+    | 'dnd'
+    | 'invisible';
+
+export interface ActivityTypes {
+    type: ActivityOptions;
+    url?: string;
 }
 
 export interface ICommand {
     name: string;
-    code: string;
+    code: string
+    messageReply?: boolean;
 }
 
 export interface ISlashCMD {
-    name: string;
-    description: string;
-    code: string;
+    name?: string;
+    description?: string;
+    code?: string;
+    ephemeral?: boolean;
     guildId?: Channel;
+    options?: ICMDSlashOptions | ICMDSlashOptions[];
+}
+
+export interface ICMDSlashOptions {
+    name?: string;
+    description?: string;
+    required?: boolean;
+    type?: typeof Constants;
 }
 
 //#endregion

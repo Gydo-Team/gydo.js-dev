@@ -1,6 +1,6 @@
 'use strict';
 const discord = require('discord.js');
-const { Intents, Client, MessageEmbed } = require("discord.js");
+const { Intents, Client, MessageEmbed, Constants } = require("discord.js");
 const intents = new Intents();
 const client = new Client({
     intents: [
@@ -18,11 +18,16 @@ client.botprefix = new discord.Collection();
 client.embed = new discord.Collection();
 client.slashName = new discord.Collection();
 client.slashCode = new discord.Collection();
+client.embedRaw = new discord.Collection();
+client.slashEphemeral = new discord.Collection();
+client.cmdreply = new discord.Collection();
 
 const guildMemberAdd = require("../events/guildMemberAdd");
 const guildMemberRemove = require("../events/guildMemberRemove");
 const interpreter = require("./interpreter");
-const { Message, Presence, Channel } = require("discord.js");
+const { Message, Presence, Channel, User, GuildMember, Role } = require("discord.js");
+
+const { ApplicationCommandOptionTypes } = Constants;
 
 class config {
     /**
@@ -56,22 +61,37 @@ class config {
         this.token = token;
         
         if(typeof token !== 'string') throw new Error(`Token must be a string!`);
-        if(typeof prefix !== 'string') throw new Error(`PREFIX_NOT_A_STRING`)
+        if(typeof prefix !== 'string') throw new Error(`Prefix NOT a string`)
         
         client.botprefix.set("prefix", this.prefix)
 
         client.login(token);
         client.on('ready', async () => {
             console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`))
+            
+            /** 
+             * Client's User Tag
+            */
+            this.tag = client.user.tag;
+            
+            /**
+            * 
+            * Bot Websocket Ping in Miliseconds 
+            * @returns {number}
+            *
+            */
+            this.ping = client.ws.ping;
+            
+            /** 
+            * Bots ID
+            */
+            this.id = client.user.id;
         });
-
-        /**
-         * 
-         * Bot Websocket Ping in Miliseconds 
-         * @returns {number}
-         *
-         */
-        this.ping = client.ws.ping;
+        
+        /** 
+         * Slash Command Option types (DJS)
+        */
+        this.slashCommandOptionTypes = ApplicationCommandOptionTypes;
     }
     
     /**
@@ -106,26 +126,27 @@ class config {
     /** 
      * @typedef {object} ActivityTypes 
      * @property {"PLAYING"|"LISTENING"|"WATCHING"|"COMPETING"|"STREAMING"} type
+     * @property {string} [url]
     */
     
     /**
     * Sets the Status for the Bot
     * @param {string|Presence} status
-    * @param {ActivityTypes} type
+    * @param {ActivityTypes} options 
     * @returns {Presence}
     */
-    status(status, { type }) {
+    status(status, options = { type, url }) {
         /**
          * Bot's Current Status, if you have set one.
         */
         this.currentStatus = status;
         
-        if(!this.currentStatus) throw new Error(`NO_STATUS_GIVEN`)
+        if(!this.currentStatus) throw new Error(`No Status Given`)
         
         if(typeof this.currentStatus !== "string") throw new Error('Status not a string')
         
         client.on("ready", async () => {
-            client.user.setActivity(this.currentStatus, { type: type })
+            client.user.setActivity(this.currentStatus, { type: options.type, url: options.url || null })
             await console.log(chalk.blue(`Bot's status set to: ${this.currentStatus}`))
         });
     }
@@ -134,6 +155,7 @@ class config {
      * Sets a new command for the bot
      * @param {string} name
      * @param {string} code
+     * @param {string} [messageReply]
      * @returns {Message}
      * @example
      * bot.cmd({
@@ -141,7 +163,7 @@ class config {
          code: 'pong!'
      })
      */
-    cmd({ name, code }) {
+    cmd({ name, code, messageReply }) {
         this.cmdname = name;
         
         if(!name) throw new Error(`CMD_NAME_EMPTY`)
@@ -153,6 +175,7 @@ class config {
 
         client.commands.set(name, name);
         client.cmdcode.set(name, code);
+        client.cmdreply.set(name, messageReply);
     }
 
     /**
@@ -173,7 +196,7 @@ class config {
     loopStatus(arrayOfStatus, time, { type }) {
         // Errors 
         if(!arrayOfStatus) throw new Error(`NO_STATUS_GIVEN`);
-        if(!time) throw new Error(`NO_LOOP_MS_TIME_GIVEN`);
+        if(!time) throw new Error(`No Time Given`);
         if(!type) throw new Error(`NO_STATUS_TYPE_GIVEN`)
         
         if(typeof time !== 'number') throw new TypeError(`Time NOT a NUMBER`);
@@ -225,14 +248,25 @@ class config {
             const { commandName, options } = interaction;
             
             const r = client.slashCode.get(slashCommand);
+            const cmdName = client.slashName.get(slashCommand);
             const s = `${r}`
-            const res = s
-            .split(`{ping}`).join(`${client.ws.ping}`)
+            const res = await s
+            .replace(`{ping}`, client.ws.ping)
+            
+            const ephemeralCMD = client.slashEphemeral.get(cmdName);
+            
+            let isEphemeral;
+            if(ephemeralCMD == true) {
+                isEphemeral = true;
+            } else if(ephemeralCMD == false) {
+                isEphemeral = false;
+            }
             
             try {
                 if(commandName === slashCommand) {
-                    interaction.reply({
+                    await interaction.reply({
                         content: res,
+                        ephemeral: isEphemeral,
                     });
                 }
             } catch (err) {
@@ -243,17 +277,26 @@ class config {
     
     /**
      * @typedef {object} ISlashCMD
-     * @property {string} name
-     * @property {string} description
-     * @property {string} code 
+     * @property {string} [name]
+     * @property {string} [description]
+     * @property {string} [code] 
      * @property {string} [guildId]
+     * @property {ICMDSlashOptions|ICMDSlashOptions[]} [options]
+    */
+    
+    /** 
+     * @typedef {object|object[]} ICMDSlashOptions
+     * @property {string} [name]
+     * @property {string} [description]
+     * @property {boolean} [required]
+     * @property {ApplicationCommandOptionTypes} [type]
     */
     
     /** 
      * Discord Slash Commands
      * @param {ISlashCMD} command
     */
-    slashCommand(command = { name, description, code, guildId }) {
+    slashCommand(command = { name, description, code, ephemeral, guildId, options }) {
         if(!command.name) throw new Error(`No Slash Command Name`);
         if(!command.description) throw new Error(`No Slash Command Description`);
         if(!command.code) throw new Error(`No Slash Command Code`);
@@ -262,6 +305,8 @@ class config {
         this._slashDesc = command.description;
         this._slashCode = command.code;
         this._slashGuildId = command.guildId;
+        this._slashOptions = command.options;
+        this._slashEphemeral = command.ephemeral;
         
         client.once('ready', () => {
             const guild = client.guilds.cache.get(command.guildId);
@@ -275,12 +320,173 @@ class config {
             
             commands?.create({
                 name: this._slashName,
-                description: this._slashDesc
+                description: this._slashDesc,
+                options: this._slashOptions || null,
             });
         });
         
-        client.slashName.set(this._slashName, this._slashName);
+        client.slashName.set(command.name, command.name);
         client.slashCode.set(this._slashName, this._slashCode);
+        client.slashEphemeral.set(this._slashName, this._slashEphemeral);
+    }
+    
+    /**
+     * Get a slash command number option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {number}
+    */
+    getSlashOptionNumber(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getNumber(target);
+        });
+    }
+    
+    /**
+     * Get a slash command string option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {string}
+    */
+    getSlashOptionString(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getString(target);
+        });
+    }
+    
+    /**
+     * Get a slash command boolean option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {boolean}
+    */
+    getSlashOptionBoolean(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getBoolean(target);
+        });
+    }
+    
+    /**
+     * Get a slash command Channel option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {Channel}
+    */
+    getSlashOptionChannel(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getChannel(target);
+        });
+    }
+    
+    /**
+     * Get a slash command Member option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {GuildMember}
+    */
+    getSlashOptionMember(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getMember(target);
+        });
+    }
+    
+    /**
+     * Get a slash command User option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {User}
+    */
+    getSlashOptionUser(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getUser(target);
+        });
+    }
+    
+    /**
+     * Get a slash command Integer option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {number}
+    */
+    getSlashOptionInteger(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getInteger(target);
+        });
+    }
+    
+    /**
+     * Get a slash command Role option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {Role}
+    */
+    getSlashOptionRole(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getRole(target);
+        });
+    }
+    
+    /**
+     * Get a slash command Mentionable option by passing in the slash command's option name
+     * @param {string} target
+     * @returns {string}
+    */
+    getSlashOptionMentionable(target) {
+        if(typeof target != 'string') throw new Error('Target NOT a string');
+        
+        client.on('interactionCreate', async (interaction) => {
+            const { options } = interaction;
+            
+            return options.getMentionable(target);
+        });
+    }
+    
+    toJSON() {
+        return client.toJSON();
+    }
+    
+    /** 
+     * @typedef {"idle"|"dnd"|"invisible"} NormalStatusTypes
+    */
+
+    // This is not like the other Status method
+    /** 
+     * Status for your discord bot
+     * @param {NormalStatusTypes} status
+    */
+    setNormalStatus(status) {
+        if(typeof status != 'string') throw new TypeError(`Status NOT a string`);
+        
+        this.normalStatus = status;
+        
+        client.once('ready', async () => {
+            client.user.setStatus(status);
+            console.log(chalk.blue(`Set Normal Status to: ${this.normalStatus}`));
+        });
     }
 }
 
