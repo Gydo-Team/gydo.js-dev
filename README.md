@@ -23,6 +23,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 - [Setup](#setup)
   - [Create a Command](#commands)
   - [Slash Commands](#slashcommands)
+  - [Embeds](#embeds)
   - [Status](#status) 
 - [Member Leave Message](#memberleaveevent)
 - [Member Join Message](#joinmessageevent)
@@ -45,9 +46,6 @@ You will automatically have this intents:
 `GUILD_MESSAGES`
 
 Which is enough, and what is required.
-
-See Intents you need: <br />
-[See DJS v13 Intents](https://discordjs.guide/popular-topics/intents.html)
 
 Once you've completed the setup, you can run `node .` (or `node <filename>.js`) in your terminal to run the bot.
 
@@ -121,7 +119,7 @@ Make sure your bot has the permission to create slash commands
 
 Simple Ping Slash Command:
 ```js
-bot.slashCommand({
+bot.slashCommand.create({
     name: "ping",
     description: "a simple ping command",
     code: "pong",
@@ -134,51 +132,58 @@ You can also put `{ping}` inside `code: ""` to get the bots ping.
 
 If you want your slash command to only be created on a specific server, then you can put the server's guild ID in `guildId`
 
-If you want it so only the user who created the interaction can see it, add the property in `slashCommand({})`: `ephemeral: true`
+If you want it so only the user who created the interaction can see it, add the property in `slashCommand.create({})`: `ephemeral: true`
 
 To detect the slash command: <br />
 ```js
-bot.slashCommandDetect("ping")
+bot.slashCommand.detect("ping")
 ```
 
 You will have to do `bot.slashCommandDetect("<slashCommandName>")` to detect the slash commands you've created, otherwise the bot will say `"interaction failed"`
 
-Simple Add Command:
+## Embeds
+
+To make an embed:
+
+You will first have to specify on what command should the embed be attached on. It'll automatically attached on a command, if you have put one, and does exist.
+
+
+All things you could add in the embed's property is mentioned here:
 
 ```js
-bot.slashCommand({
-    name: "add",
-    description: "A Simple add command",
-    code: `The Answer is: ${bot.getSlashOptionNumber('num1') + bot.getSlashOptionNumber('num2')}`,
-    options: [
+new gydo.Embed("<any of your command name>", {
+    title: "Embed Title",
+    author: "Embed Author",
+    authorURL: "<some URL here>",
+    description: "Embed Description \n [Hyper Link](https://npmjs.com/package/gydo.js-dev/)",
+    footer: "Embed Footer",
+    fields: [
         {
-            name: 'num1',
-            description: "First Number",
-            required: true,
-            type: bot.slashCommandOptionTypes.NUMBER
+            name: "First Field",
+            value: "First Field Value",
+            // Optional
+            inline: true
         },
         {
-            name: 'num2',
-            description: 'Second Number',
-            required: true,
-            type: bot.slashCommandOptionTypes.NUMBER
+            name: "Second Field",
+            value: ""
         }
-    ]
+    ],
+    color: "RANDOM",
+    timestamp: true
 });
-
-bot.slashCommandDetect("add");
 ```
 
 ### Status
 
 ```js 
-bot.status("<status>", { type: "PLAYING" });
+bot.activity.setActivity("<status>", { type: "PLAYING" });
 ``` 
 <br />
 
 or a **Changing Status Loop** <br />
 ```js
-bot.loopStatus(["<status>", "another one"], 1000, { type: "PLAYING" })
+bot.activity.loopStatus(["<status>", "another one"], 1000, { type: "PLAYING" })
 ```
 <br />
 
@@ -188,6 +193,17 @@ The Second Argument (or the time) is in Miliseconds (1000 = 1 second), and you c
 
 Status Types are: <br />
 `PLAYING`, `LISTENING`, `WATCHING`, and `STREAMING`
+
+**You can also do just a normal status:**
+
+```js
+bot.activity.setUserStatus('idle');
+```
+
+Normal Status Types are: <br />
+`idle` (Idle)
+`dnd` (Do not Disturb)
+`invisible` (Invisible)
 
 ### Member Leave Event
 
