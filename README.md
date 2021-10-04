@@ -18,15 +18,18 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 [Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
 
-## Jump to Pages (Table of Contents)
+## Table of Contents
 
 - [Setup](#setup)
   - [Create a Command](#commands)
+  - [Command Handler](#command-handler)
   - [Slash Commands](#slashcommands)
+  - [Client Error](#clienterror)
   - [Embeds](#embeds)
   - [Status](#status) 
-- [Member Leave Message](#memberleaveevent)
-- [Member Join Message](#joinmessageevent)
+- [Member Leave Message](#member-leave-event)
+- [Member Join Message](#join-message-event)
+- [Message Update](#message-update)
 - [Links](#links)
 
 ## Setup
@@ -99,9 +102,10 @@ bot.cmd({
 `{guildname}` - Sends the Guild's name <br />
 
 **Args**
+
 `{args;<num>}`
 
-You can `<num>` with a number.
+You can replace `<num>` with a number.
 
 Example: 
 
@@ -112,6 +116,21 @@ Output: `gydo` <br />
 Raw Args Output: `["gydo"]`
 
 Since this is the Dev branch, there is unfortunately, no documentation for this, _yet._
+
+### Command Handler
+
+Baisc Command Handler Example:
+
+```js
+const fs = require('fs');
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    
+    bot.cmd(command);
+}
+```
 
 ## Slash Commands
 
@@ -139,7 +158,21 @@ To detect the slash command: <br />
 bot.slashCommand.detect("ping")
 ```
 
-You will have to do `bot.slashCommandDetect("<slashCommandName>")` to detect the slash commands you've created, otherwise the bot will say `"interaction failed"`
+You will have to do `bot.slashCommand.detect("<slashCommandName>")` to detect the slash commands you've created, otherwise the bot will say `"interaction failed"`
+
+## ClientError
+
+`ClientError` _**extends**_ [EventEmitter](https://nodejs.org/api/events.html)
+
+```js
+const { ClientError } = require('gydo.js-dev');
+
+const ClientErr = new ClientError();
+
+ClientErr.on('error', error => {
+    console.error(error);
+});
+```
 
 ## Embeds
 
@@ -157,6 +190,7 @@ new gydo.Embed("<any of your command name>", {
     authorURL: "<some URL here>",
     description: "Embed Description \n [Hyper Link](https://npmjs.com/package/gydo.js-dev/)",
     footer: "Embed Footer",
+    // (You can add more than 2 fields)
     fields: [
         {
             name: "First Field",
@@ -166,7 +200,7 @@ new gydo.Embed("<any of your command name>", {
         },
         {
             name: "Second Field",
-            value: ""
+            value: "Second Field Value"
         }
     ],
     color: "RANDOM",
@@ -200,10 +234,12 @@ Status Types are: <br />
 bot.activity.setUserStatus('idle');
 ```
 
-Normal Status Types are: <br />
+Normal Status Types are:
+
 `idle` (Idle)
 `dnd` (Do not Disturb)
 `invisible` (Invisible)
+`online` (Online)
 
 ### Member Leave Event
 
@@ -242,6 +278,10 @@ Functions: <br />
 `{member-id}` - Returns the member's id
 
 `{guild-memmber-count}` - Returns the Guild's Member Count (Will Include Bots)
+
+# Message Update
+
+`MessageUpdate` _**extends**_ [Base](https://discord.js.org/#/docs/main/stable/class/Base)
 
 ## Links
 Report the bugs on our Discord Server, and/or to our GitHub Repository.

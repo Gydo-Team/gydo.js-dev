@@ -6,12 +6,12 @@ const { ApplicationCommandOptionTypes } = Constants;
 /** 
  * Discord Slash Commands
 */
-class SlashCommand {
+class SlashCommandManager {
     constructor(client) {
         this.client = client;
         
         /** 
-         * Slash Command Option types (DJS)
+        * Slash Command Option types (DJS)
         */
         this.optionTypes = ApplicationCommandOptionTypes;
     }
@@ -110,4 +110,4 @@ class SlashCommand {
     }
 }
 
-module.exports = SlashCommand;
+module.exports = SlashCommandManager;

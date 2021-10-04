@@ -1,6 +1,7 @@
 // Imports 
 import { 
     Client,
+    ClientUser,
     Message,
     Presence,
     Channel,
@@ -10,34 +11,42 @@ import {
     User,
     GuildMember,
     Role,
-    MessageEmbed
+    MessageEmbed,
+    Base
 } from "discord.js";
+import { EventEmitter } from 'events';
+import {
+    Snowflake,
+} from 'discord-api-types/v9'
 
 //#region Class(es)
 export class config {
     public constructor (va: IConfig);
-    public readonly ping: number;
+    public readonly ping: number | null;
     private readonly token: string;
     public readonly prefix: string;
-    public readonly id: number;
-    public readonly tag: string;
+    public readonly id: Snowflake | null;
+    public readonly tag: string | null;
+    public activity: ActivityManager;
+    public slashCommand: SlashCommandManager;
     public guildMemberAdd(va: IGuildMember): Message;
     public guildMemberRemove(va: IGuildMember): Message;
-    public cmd(cmd: ICommand): Message;
-    public MessageDetect(): Message;
+    public MessageUpdate(va: IGuildMember);
+    public cmd(cmd: ICommand): void;
+    public MessageDetect(): Message | null;
     public toJSON(): JSON;
 }
 
-export class Activity {
+export class ActivityManager {
     public constructor(client: Client);
     public setActivity(status: string, options: ActivityTypes): Presence;
     public setUserStatus(status: NormalStatusTypes): Presence;
-    public loopStatus(arrayOfStatus: string[], time: number, type: ActivityTypes): Presence[];
+    public loopStatus(arrayOfStatus: string[] | Array<string>, time: number, type: ActivityTypes): Presence[];
     public readonly normalStatus: string;
     public readonly currentStatus: string;
 }
 
-export class SlashCommand {
+export class SlashCommandManager {
     public constructor(client: Client);
     public optionTypes: typeof Constants;
     public detect(slashCommand: string): Promise<Message>;
@@ -52,19 +61,40 @@ export class SlashCommand {
 
 export class Embed {
     public constructor(cmd: string, options: IEmbed);
-    private readonly __cmd: string;
-    private readonly __embedTitle: string;
-    private readonly __embedDesc: string;
-    private readonly __embedFooter: string;
-    private readonly __embedFields: string[];
-    private readonly __embedColor: string;
-    private readonly __embedTimestamp: boolean;
-    private readonly __embedAuthor: string;
-    private readonly __embedAuthorURL: string;
-    public JSONtoEmbed(rawjson: JSON): MessageEmbed;
+    private readonly cmd: string;
+    private readonly embedTitle: string | null;
+    private readonly embedDesc: string | null;
+    private readonly embedFooter: string | null;
+    private readonly embedFields: IEmbedFields[] | null;
+    private readonly embedColor: string | null;
+    private readonly embedTimestamp: boolean | null;
+    private readonly embedAuthor: string | null;
+    private readonly embedAuthorURL: string | null;
+    public static JSONtoEmbed(rawjson: JSON): MessageEmbed;
 }
 
-// Interfaces
+export class MessageUpdate extends Base {
+    public constructor(options: IGuildMember);
+    public readonly message: string;
+    public readonly channel: Channel;
+    public toJSON(): JSON;
+}
+
+export class ClientError extends EventEmitter {
+    public readonly error: string | null;
+}
+
+export class interpreter {
+    public constructor(client: Client);
+}
+
+export class EventsManager extends EventEmitter {
+    public constructor();
+}
+
+//#endregion
+
+//#region Interfaces and Types
 export interface IConfig {
     token: string;
     prefix: string;
@@ -83,6 +113,7 @@ export type ActivityOptions =
     | "COMPETING";
     
 export type NormalStatusTypes =
+    | 'online'
     | 'idle'
     | 'dnd'
     | 'invisible';
@@ -120,7 +151,7 @@ export interface IEmbed {
     authorURL?: string;
     description?: string;
     footer?: string;
-    fields?: IEmbedFields[] | object[];
+    fields?: IEmbedFields[];
     color?: ColorResolvable;
     timestamp?: boolean;
 }

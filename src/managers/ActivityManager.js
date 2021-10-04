@@ -6,7 +6,7 @@ const chalk = require('chalk');
 /** 
  * All Activity functions
 */
-class Activity {
+class ActivityManager {
     constructor(client) {
         this.client = client;
     }
@@ -26,12 +26,13 @@ class Activity {
     setActivity(status, options = { type, url }) {
         /**
          * Bot's Current Status, if you have set one.
+         * @type {?string}
         */
         this.currentStatus = status;
         
         if(!this.currentStatus) throw new Error(`No Status Given`)
         
-        if(typeof this.currentStatus !== "string") throw new Errorz,('Status not a string');
+        if(typeof this.currentStatus !== "string") throw new Error('Status not a string');
         
         client.on("ready", async () => {
             client.user.setActivity(this.currentStatus, { type: options.type, url: options.url || null })
@@ -43,7 +44,8 @@ class Activity {
      * @typedef {"idle"|"dnd"|"invisible"} NormalStatusTypes
     */
 
-    // This is not like the other Status method
+    // This is not like the other Status method, this is just a normal status
+    // Like Idle, Do not Disturb, etc.
     /** 
      * Status for your discord bot
      * @param {NormalStatusTypes} status
@@ -51,6 +53,10 @@ class Activity {
     setUserStatus(status) {
         if(typeof status != 'string') throw new TypeError(`Status NOT a string`);
         
+        /**
+        * Normal User Status
+        * @type {?string}
+        */
         this.normalStatus = status;
         
         client.once('ready', async () => {
@@ -87,4 +93,4 @@ class Activity {
     }
 }
 
-module.exports = Activity;
+module.exports = ActivityManager;

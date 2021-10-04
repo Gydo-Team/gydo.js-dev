@@ -9,21 +9,22 @@ const chalk = require("chalk");
 client.commands = new discord.Collection();
 client.cmdcode = new discord.Collection();
 client.botprefix = new discord.Collection();
-// client.embed = new discord.Collection();
 client.slashName = new discord.Collection();
 client.slashCode = new discord.Collection();
 client.slashEphemeral = new discord.Collection();
 client.cmdreply = new discord.Collection();
- 
+client.cmds = new discord.Collection();
+
 const guildMemberAdd = require("../events/guildMemberAdd");
 const guildMemberRemove = require("../events/guildMemberRemove");
 const interpreter = require("./interpreter");
 const { Message, Presence, Channel, User, GuildMember, Role } = require("discord.js");
 const { ApplicationCommandOptionTypes } = Constants;
-const Activity = require("../classes/Activity");
-const SlashCommand = require('../classes/SlashCommand');
+const ActivityManager = require("../managers/ActivityManager");
+const SlashCommandManager = require('../managers/SlashCommandManager');
 const SaveEmbed = require('../utils/embed');
-
+const MessageUpdate = require('../events/MessageUpdate');
+const EventsManager = require('../managers/EventsManager');
 
 class config {
     /**
@@ -45,19 +46,21 @@ class config {
         if(!prefix) throw new Error(`No Prefix Given!`);
         
         /** 
-         * Bot's prefix 
+        * Bot's prefix
+        * @type {string}
         */
         this.prefix = prefix;
         
         /** 
-         * Bot's token
-         * Never share your bot's token with anyone!
-         * @private
+        * Bot's token
+        * Never share your bot's token with anyone!
+        * @type {?string}
+        * @private
         */
         this.token = token;
         
-        if(typeof token !== 'string') throw new Error(`Token must be a string!`);
-        if(typeof prefix !== 'string') throw new Error(`Prefix NOT a string`)
+        if(typeof token !== 'string') throw new TypeError(`Token must be a string!`);
+        if(typeof prefix !== 'string') throw new TypeError(`Prefix NOT a string`)
         
         client.botprefix.set("prefix", this.prefix)
 
@@ -65,28 +68,48 @@ class config {
         client.once('ready', async () => {
             console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`))
             
-            /** 
-             * Client's User Tag
-            */
-            this.tag = client.user.tag;
+            if(client.isReady()) {
+                /** 
+                * Client's User Tag
+                * @readonly
+                */
+                this.tag = client.user.tag;
+            } else if(!client.isReady()) {
+                this.tag = null;
+            }
             
             /**
-            * 
             * Bot Websocket Ping in Miliseconds 
-            * @returns {number}
-            *
+            * @type {?number}
+            * @readonly
             */
-            this.ping = client.ws.ping;
+            this.ping = client.ws.ping ?? null;
             
             /** 
             * Bots ID
+            * @type {?Snowflake}
+            * @readonly
             */
-            this.id = client.user.id;
+            this.id = client.user.id ?? null;
         });
         
-        this.activity = new Activity();
+        /**
+        * Activity of your Discord Bot
+        * @type {ActivityManager}
+        */
+        this.activity = new ActivityManager();
         
-        this.slashCommand = new SlashCommand();
+        /**
+        * Slash Commands
+        * @type {SlashCommandManager}
+        */
+        this.slashCommand = new SlashCommandManager();
+        
+        /**
+        * Events Manager for manual Events Managing
+        * @type {EventsManager}
+        */
+        this.events = new EventsManager();
     }
     
     /**
@@ -117,6 +140,18 @@ class config {
     guildMemberRemove({ channel, message }) {
         guildMemberRemove(client, channel, message)
     }
+    
+    /**
+    * Executes when a message is updated
+    * @param {string|Channel} channel
+    * @param {string} message
+    */
+    MessageUpdate({ channel, message }) {
+        new MessageUpdate({
+            channel: channel,
+            message: message
+        });
+    }
 
     /**
      * Sets a new command for the bot
@@ -131,6 +166,10 @@ class config {
      })
      */
     cmd({ name, code, messageReply }) {
+        /**
+        * Shows the commands you have put, if there is one
+        * @type {?string}
+        */
         this.cmdname = name;
         
         if(!name) throw new Error(`CMD_NAME_EMPTY`)
@@ -150,7 +189,7 @@ class config {
      * (Must have the right Intents)
      */
     MessageDetect() {
-        interpreter(client);
+        new interpreter(client);
     }
     
     toJSON() {

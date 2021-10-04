@@ -14,6 +14,9 @@ client.embedAuthorURL = new discord.Collection();
 client.doesEmbed = new discord.Collection();
 client.embedCMDList = new discord.Collection();
 
+/**
+* Discord Message Embed
+*/
 class Embed {
     /** 
      * @typedef {object} IEmbed
@@ -22,7 +25,7 @@ class Embed {
      * @property {string} [authorURL]
      * @property {string} [description]
      * @property {string} [footer]
-     * @property {IEmbedFields[]|string[]} [fields]
+     * @property {IEmbedFields[]} [fields]
      * @property {string} [color]
      * @property {boolean} [timestamp]
     */
@@ -47,16 +50,32 @@ class Embed {
     
         const { title, description, footer, fields, color, timestamp, author, authorURL } = options;
         
-        this.__cmd = cmd;
-        this.__embedTitle = title;
-        this.__embedDesc = description;
-        this.__embedFooter = footer;
-        this.__embedFields = fields;
-        this.__embedColor = color;
-        this.__embedTimestamp = timestamp;
-        this.__embedAuthor = author;
-        this.__embedAuthorURL = authorURL;
-    
+        if (cmd) this.cmd = cmd
+        
+        if (title) this.embedTitle = title
+        else this.embedTitle = null;
+        
+        if (description) this.embedDesc = description
+        else this.embedDesc = null;
+        
+        if (footer) this.embedFooter = footer
+        else this.embedFooter = null;
+        
+        if (fields) this.embedFields = fields
+        else this.embedFields = null;
+        
+        if (color) this.embedColor = color
+        else this.embedColor = null;
+        
+        if (timestamp) this.embedTimestamp = timestamp
+        else this.embedTimestamp = null;
+        
+        if (author) this.embedAuthor = author
+        else this.embedAuthor = null;
+        
+        if (authorURL) this.embedAuthorURL = authorURL
+        else this.embedAuthorURL = null;
+        
         // SaveEmbed(EmbedRaw, cmd);
         client.embedTitle.set(cmd, title);
         client.embedDesc.set(cmd, description);
@@ -66,18 +85,35 @@ class Embed {
         client.embedTimestamp.set(cmd, timestamp);
         client.embedAuthor.set(cmd, author);
         client.embedAuthorURL.set(cmd, authorURL);
-        client.embedCMDList.set(`${prefix}${this.__cmd}`, this.__cmd)
+        client.embedCMDList.set(`${prefix}${this.cmd}`, this.cmd)
     }
     
     /** 
      * Turns a Raw JSON Embed to Embed
      * @returns {MessageEmbed}
     */
-    JSONtoEmbed(rawjson) {
+    static JSONtoEmbed(rawjson) {
         const JSONparse = JSON.parse(rawjson);
         const Embed = new MessageEmbed(JSONparse);
         
         return Embed;
+    }
+    
+    /**
+    * Returns an Object of your Embed's properties
+    * @returns {Object}
+    */
+    toJSON() {
+        return {
+            title: this.embedTitle,
+            description: this.embedDesc,
+            footer: this.embedFooter,
+            fields: this.embedFields,
+            color: this.embedColor,
+            timestamp: this.embedTimestamp,
+            author: this.embedAuthor,
+            authorURL: this.embedAuthorURL
+        }
     }
 }
 

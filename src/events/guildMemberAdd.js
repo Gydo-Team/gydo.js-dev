@@ -11,16 +11,7 @@ const guildMemberAdd = async (client, channel, message) => {
         
         if(typeof channel !== 'string') throw new Error(`LEAVE_CHANNEL_NOT_VALID`);
         this.channel = channel
-        
-        if(this.message.length < 1) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`);
-        
-        if(this.channel.length < 1) throw new Error(`NO_LEAVE_CHANNEL_ID_GIVEN`)
-        
-        if(this.message == null) return
-        if(this.channel == null) return
 
-
-        if(typeof channel !== 'number') return console.error(`Put a valid Channel ID!`)
         client.on('guildMemberAdd', member => {
             const welcomeChannel = member.guild.channels.cache.get(this.channel);
             
