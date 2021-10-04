@@ -23,7 +23,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 - [Setup](#setup)
   - [Create a Command](#commands)
   - [Command Handler](#command-handler)
-  - [Slash Commands](#slashcommands)
+  - [Slash Commands](#slash-commands)
   - [Client Error](#clienterror)
   - [Embeds](#embeds)
   - [Status](#status) 
@@ -282,6 +282,29 @@ Functions: <br />
 # Message Update
 
 `MessageUpdate` _**extends**_ [Base](https://discord.js.org/#/docs/main/stable/class/Base)
+
+**Example:**
+
+```js
+bot.MessageUpdate({
+    channel: "<CHANNEL_ID>",
+    message: "<MESSAGE>"
+});
+```
+
+**Functions:**
+
+`{oldMessage}` - Old Message Content _before_ the message were updated
+
+`{newMessage}` - New Message Content _after_ the message were updated
+
+`{message.author.id}` - Message Author's ID
+
+`{message.author.tag}` - Message Author's User Tag
+
+`{message.author.mention}` - Mentions the Message Author
+
+`{message.channel}` - the Channel the message was sent on by the author
 
 ## Links
 Report the bugs on our Discord Server, and/or to our GitHub Repository.
