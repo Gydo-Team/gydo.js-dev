@@ -30,6 +30,7 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 - [Member Leave Message](#member-leave-event)
 - [Member Join Message](#join-message-event)
 - [Message Update](#message-update)
+- [Contributing](#contributing)
 - [Links](#links)
 
 ## Setup
@@ -305,6 +306,14 @@ bot.MessageUpdate({
 `{message.author.mention}` - Mentions the Message Author
 
 `{message.channel}` - the Channel the message was sent on by the author
+
+## Contributing
+
+You can contribute on gydo.js dev branch by making a pull request on our [GitHub Repository](https://github.com/Gydo-Team/gydo.js-dev)
+
+[See Contributing Guide](https://github.com/Gydo-Team/gydo.js-dev/blob/main/docs/CONTRIBUTING.md)
+
+...and Thanks for Contributing!
 
 ## Links
 Report the bugs on our Discord Server, and/or to our GitHub Repository.
