@@ -2,8 +2,8 @@ const client = require('../utils/client');
 const { EventEmitter } = require('events');
 
 /**
-* An Event Listener for when Client got an Error
-*/
+ * An Event Listener for when Client got an Error
+ */
 class ClientError extends EventEmitter {
     constructor() {
         super();

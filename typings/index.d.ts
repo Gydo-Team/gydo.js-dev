@@ -123,6 +123,8 @@ export class Util {
 export interface IConfig {
     token: string;
     prefix: string;
+    manualIntents?: boolean;
+    logEvents?: boolean;
 }
 
 export interface IGuildMember {

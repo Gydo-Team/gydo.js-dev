@@ -16,9 +16,9 @@ To contribute, you can fork the repository, and make a pull request. [See Pull R
 ```js
 class Exmaple {
     /** 
-    * Returns a string
-    * @returns {string}
-    */
+     * Returns a string
+     * @returns {string}
+     */
     constructor() {
        return "example";
     }  

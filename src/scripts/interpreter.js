@@ -185,7 +185,7 @@ class interpreter {
                 
                 const res = await require(`../funcs/${func}`)(client, this.res, author, args, message, currentCommand);
 
-                this.res = await res;
+                this.res = await res ?? null;
             }
         }
     }

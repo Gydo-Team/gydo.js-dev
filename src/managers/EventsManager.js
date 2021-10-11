@@ -2,13 +2,13 @@ const client = require("../utils/client");
 const EventEmitter = require('events').EventEmitter;
 
 /**
-* Events Manager for manual event managing
-* @extends {EventEmitter}
-*/
+ * Events Manager for manual event managing
+ * @extends {EventEmitter}
+ */
 class EventsManager extends EventEmitter {
     /**
-    * Will automatically emit events
-    */
+     * Will automatically emit events
+     */
     constructor() {
         super();
         client.on('ready', () => {

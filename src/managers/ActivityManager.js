@@ -7,22 +7,22 @@ const chalk = require('chalk');
  * All Activity functions
 */
 class ActivityManager {
-    constructor(client) {
-        this.client = client;
+    constructor(wantLogged) {
+        this.wantLogged = wantLogged;
     }
     
     /** 
      * @typedef {object} ActivityTypes 
      * @property {"PLAYING"|"LISTENING"|"WATCHING"|"COMPETING"|"STREAMING"} type
      * @property {string} [url]
-    */
+     */
     
     /**
-    * Sets the Status for the Bot
-    * @param {string|Presence} status
-    * @param {ActivityTypes} options 
-    * @returns {Presence}
-    */
+     * Sets the Status for the Bot
+     * @param {string|Presence} status
+     * @param {ActivityTypes} options 
+     * @returns {Presence}
+     */
     setActivity(status, options = { type, url }) {
         /**
          * Bot's Current Status, if you have set one.
@@ -36,20 +36,20 @@ class ActivityManager {
         
         client.on("ready", async () => {
             client.user.setActivity(this.currentStatus, { type: options.type, url: options.url || null })
-            await console.log(chalk.blue(`Bot's status set to: ${this.currentStatus}`))
+            if(this.wantLogged === true) console.log(chalk.blue(`Bot's status set to: ${this.currentStatus}`));
         });
     }
     
     /** 
-     * @typedef {"idle"|"dnd"|"invisible"} NormalStatusTypes
-    */
+     * @typedef {"idle"|"dnd"|"invisible"|"online"} NormalStatusTypes
+     */
 
     // This is not like the other Status method, this is just a normal status
     // Like Idle, Do not Disturb, etc.
     /** 
      * Status for your discord bot
      * @param {NormalStatusTypes} status
-    */
+     */
     setUserStatus(status) {
         if(typeof status != 'string') throw new TypeError(`Status NOT a string`);
         
@@ -61,17 +61,17 @@ class ActivityManager {
         
         client.once('ready', async () => {
             client.user.setStatus(status);
-            console.log(chalk.blue(`Set Normal Status to: ${this.normalStatus}`));
+            if(this.wantLogged) console.log(chalk.blue(`Set Normal Status to: ${this.normalStatus}`));
         });
     }
     
     /**
      * A Loop Status for your Discord Bot
-     * @param {string[]} arrayOfStatus
+     * @param {string[]|Array<string>} arrayOfStatus
      * @param {number} time
      * @param {ActivityTypes} type
      * @example bot.loopStatus(["Hey!", "Hello!", "!help"], 2000, { type: "PLAYING" })
-    */
+     */
     loopStatus(arrayOfStatus, time, { type }) {
         // Errors 
         if(!arrayOfStatus) throw new Error(`NO_STATUS_GIVEN`);
@@ -82,12 +82,12 @@ class ActivityManager {
         
         // Sets the Changing Status Loop
         client.on("ready", async () => {
-            let index = 0;
+            let i = 0;
             setInterval(() => {
-                if(index === arrayOfStatus.length) index = 0;
-                const res = arrayOfStatus[index];
+                if(i === arrayOfStatus.length) i = 0;
+                const res = arrayOfStatus[i];
                 client.user.setActivity(res, { type: type })
-                index++;
+                i++;
             }, time);
         });
     }

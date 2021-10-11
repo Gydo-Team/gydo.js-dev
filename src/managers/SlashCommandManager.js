@@ -5,7 +5,7 @@ const { ApplicationCommandOptionTypes } = Constants;
 
 /** 
  * Discord Slash Commands
-*/
+ */
 class SlashCommandManager {
     constructor(client) {
         this.client = client;
@@ -19,7 +19,7 @@ class SlashCommandManager {
     /** 
      * Detect a Slash Command
      * @param {string} slashCommand
-    */
+     */
     detect(slashCommand) {
         client.on("interactionCreate", async (interaction) => {
             if(!interaction.isCommand()) return;
@@ -61,7 +61,7 @@ class SlashCommandManager {
      * @property {string} [code] 
      * @property {string} [guildId]
      * @property {ICMDSlashOptions|ICMDSlashOptions[]} [options]
-    */
+     */
     
     /** 
      * @typedef {object|object[]} ICMDSlashOptions
@@ -69,12 +69,12 @@ class SlashCommandManager {
      * @property {string} [description]
      * @property {boolean} [required]
      * @property {ApplicationCommandOptionTypes} [type]
-    */
+     */
     
     /** 
      * Discord Slash Commands
      * @param {ISlashCMD} command
-    */
+     */
     create(command = { name, description, code, ephemeral, guildId, options }) {
         if(!command.name) throw new Error(`No Slash Command Name`);
         if(!command.description) throw new Error(`No Slash Command Description`);

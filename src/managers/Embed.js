@@ -28,55 +28,38 @@ class Embed {
      * @property {IEmbedFields[]} [fields]
      * @property {string} [color]
      * @property {boolean} [timestamp]
-    */
+     */
     
     /** 
      * @typedef {object[]} IEmbedFields
      * @property {string} [name]
      * @property {string} [value]
      * @property {boolean} [inline]
-    */
+     */
     
     /** 
      * Discord Embed
      * @param {string} cmd
      * @param {IEmbed} options
-    */
+     */
     constructor(cmd, options = { title, author, authorURL, description, footer, fields, color, timestamp }) {
         
-        if(!cmd) throw new TypeError('No Command Specified');
+        if(!cmd) throw new Error('No Command Specified');
         
         const prefix = client.botprefix.get("prefix").toString();
     
         const { title, description, footer, fields, color, timestamp, author, authorURL } = options;
         
-        if (cmd) this.cmd = cmd
+        this.cmd = cmd
+        this.embedTitle = title
+        this.embedDesc = description
+        this.embedFooter = footer
+        this.embedFields = fields
+        this.embedColor = color
+        this.embedTimestamp = timestamp
+        this.embedAuthor = author
+        this.embedAuthorURL = authorURL
         
-        if (title) this.embedTitle = title
-        else this.embedTitle = null;
-        
-        if (description) this.embedDesc = description
-        else this.embedDesc = null;
-        
-        if (footer) this.embedFooter = footer
-        else this.embedFooter = null;
-        
-        if (fields) this.embedFields = fields
-        else this.embedFields = null;
-        
-        if (color) this.embedColor = color
-        else this.embedColor = null;
-        
-        if (timestamp) this.embedTimestamp = timestamp
-        else this.embedTimestamp = null;
-        
-        if (author) this.embedAuthor = author
-        else this.embedAuthor = null;
-        
-        if (authorURL) this.embedAuthorURL = authorURL
-        else this.embedAuthorURL = null;
-        
-        // SaveEmbed(EmbedRaw, cmd);
         client.embedTitle.set(cmd, title);
         client.embedDesc.set(cmd, description);
         client.embedFooter.set(cmd, footer);
@@ -91,7 +74,7 @@ class Embed {
     /** 
      * Turns a Raw JSON Embed to Embed
      * @returns {MessageEmbed}
-    */
+     */
     static JSONtoEmbed(rawjson) {
         const JSONparse = JSON.parse(rawjson);
         const Embed = new MessageEmbed(JSONparse);
@@ -100,9 +83,9 @@ class Embed {
     }
     
     /**
-    * Returns an Object of your Embed's properties
-    * @returns {Object}
-    */
+     * Returns an Object of your Embed's properties
+     * @returns {Object}
+     */
     toJSON() {
         return {
             title: this.embedTitle,

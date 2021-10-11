@@ -32,51 +32,37 @@ class config {
      * Simple and needed setup to start the bot
      * @param {string} token
      * @param {string} prefix
+     * @param {boolean} manualIntents If you want to manually set intents (not recommended)
+     * @param {boolean} logEvents If you want to log the events on what ks happening on the bot
      * @example
-     * // Bot Setup
+     * // Example
      * const gydo = require("gydo.js-dev");
      * const bot = new gydo.config({ 
      *     token: "TOKEN",
      *     prefix: "!"
      * });
      */
-    constructor ({ token, prefix }) {
+    constructor ({ token, prefix, manualIntents, logEvents }) {
         if(!token) throw new Error(`INVALID_TOKEN`);
 
         if(!prefix) throw new Error(`No Prefix Given!`);
         
-        /** 
-        * Bot's prefix
-        * @type {string}
-        */
-        this.prefix = prefix;
-        
-        /** 
-        * Bot's token
-        * Never share your bot's token with anyone!
-        * @type {?string}
-        * @private
-        */
-        this.token = token;
-        
         if(typeof token !== 'string') throw new TypeError(`Token must be a string!`);
         if(typeof prefix !== 'string') throw new TypeError(`Prefix NOT a string`)
-        
+
         client.botprefix.set("prefix", this.prefix)
+        
+        let wantLogged = logEvents ? true : false;
 
         client.login(token);
         client.once('ready', async () => {
-            console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`))
+            if(wantLogged === true) console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`));
             
-            if(client.isReady()) {
-                /** 
-                * Client's User Tag
-                * @readonly
-                */
-                this.tag = client.user.tag;
-            } else if(!client.isReady()) {
-                this.tag = null;
-            }
+            /** 
+            * Client's User Tag
+            * @readonly
+            */
+            this.tag = client.user.tag ?? null;
             
             /**
             * Bot Websocket Ping in Miliseconds 
@@ -97,7 +83,7 @@ class config {
         * Activity of your Discord Bot
         * @type {ActivityManager}
         */
-        this.activity = new ActivityManager();
+        this.activity = new ActivityManager(wantLogged);
         
         /**
         * Slash Commands
@@ -110,6 +96,20 @@ class config {
         * @type {EventsManager}
         */
         this.events = new EventsManager();
+
+        /** 
+        * Bot's prefix
+        * @type {string}
+        */
+        this.prefix = prefix;
+
+        /** 
+        * Bot's token
+        * Never share your bot's token with anyone!
+        * @type {?string}
+        * @private
+        */
+        this.token = token;
     }
     
     /**
