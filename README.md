@@ -3,6 +3,7 @@
   <p>
     <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server"/></a>
     <a href="https://npmjs.com/package/gydo.js-dev"><img src="https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm" alt="npm gydo" />
+    <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/Gydo-Team/gydo.js-dev/main">
   </p>
   <br />
 </div>
@@ -158,7 +159,8 @@ If you want your slash command to only be created on a specific server, then you
 
 If you want it so only the user who created the interaction can see it, add the property in `slashCommand.create({})`: `ephemeral: true`
 
-To detect the slash command: <br />
+To detect the slash command:
+
 ```js
 bot.slashCommand.detect("ping")
 ```
@@ -218,20 +220,24 @@ new gydo.Embed("<any of your command name>", {
 ```js 
 bot.activity.setActivity("<status>", { type: "PLAYING" });
 ``` 
-<br />
 
-or a **Changing Status Loop** <br />
+or a **Changing Status Loop**
 ```js
 bot.activity.loopStatus(["<status>", "another one"], 1000, { type: "PLAYING" })
 ```
-<br />
 
-It must be on an Array, otherwise it'll send an error. <br />
+It must be on an Array, otherwise it'll send an error.
 
-The Second Argument (or the time) is in Miliseconds (1000 = 1 second), and you can't go below 1000 ms, or it'll send an error. <br />
+The Second Argument (or the time) is in Miliseconds (1000 = 1 second), and you can't go below 1000 ms, or it'll send an error.
 
-Status Types are: <br />
-`PLAYING`, `LISTENING`, `WATCHING`, and `STREAMING`
+Status Types are:
+`PLAYING`, 
+
+`LISTENING`, 
+
+`WATCHING`, and 
+
+`STREAMING`
 
 **You can also do just a normal status:**
 
