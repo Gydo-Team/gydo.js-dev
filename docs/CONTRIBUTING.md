@@ -1,5 +1,9 @@
 # Contribution Guide
 
+To contribute, you can fork the repository, and make a pull request. [See Pull Request Requirements](#pull-request-requirements)
+
+## Pull Request Requirements
+
 **By making a pull request you need to follow these steps:**
 
 **1. Explain:** Explain the changes, and why you changed them.

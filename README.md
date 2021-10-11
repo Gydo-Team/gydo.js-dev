@@ -20,20 +20,30 @@ Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
 
 ## Table of Contents
 
-- [Setup](#setup)
+- [Installation](#installation)
+- [Example](#example-usage)
   - [Create a Command](#commands)
-  - [Command Handler](#command-handler)
+    - [Command Handler](#command-handler)
   - [Slash Commands](#slash-commands)
-  - [Client Error](#clienterror)
   - [Embeds](#embeds)
-  - [Status](#status) 
-- [Member Leave Message](#member-leave-event)
-- [Member Join Message](#join-message-event)
-- [Message Update](#message-update)
+  - [Status](#status)
+- [Events](#events)
+  - [Client Error](#clienterror)
+  - [Member Leave Message](#member-leave-event)
+  - [Member Join Message](#join-message-event)
+  - [Message Update](#message-update)
 - [Contributing](#contributing)
 - [Links](#links)
 
-## Setup
+## Installation
+
+**Node v16.6.0 or later is required**
+
+```sh-session
+npm install gydo.js
+```
+
+## Example Usage
 
 ```js 
 const gydo = require("gydo.js-dev");
@@ -85,34 +95,28 @@ Every command will start with your prefix like `?ping` <br />
 ```js
 bot.cmd({ 
     name: "ping",
-    code: "Pong! ({ping}ms)"
+    code: "Pong! | $[ping]ms"
 });
 ```
 **Functions:**
-<br />
-`{ping}` - Sends the Bot's ping <br />
 
-`{message-author-tag}` - Sends the tag of the user who sent/ran the command <br />
+`$[ping]` - Sends the Bot's ping
 
-`{message-author-id}` - Sends the ID of the User who ran the command <br /> 
-
-`{bot-user-tag}` - Sends the tag of your Bot <br />
-
-`{bot-user-id}` - Sends the ID of your Bot <br />
-
-`{guildname}` - Sends the Guild's name <br />
+`$[author.tag]` - Author's User Tag of the message
 
 **Args**
 
-`{args;<num>}`
+`$[args;<num>]`
 
 You can replace `<num>` with a number.
 
 Example: 
 
-Code: `{args;0}` <br />
-Message sent by user: "!example gydo" <br />
-Output: `gydo` <br />
+Code: `$[args;0]`
+
+Message sent by user: "!example gydo"
+
+Output: `gydo`
 
 Raw Args Output: `["gydo"]`
 
@@ -241,6 +245,8 @@ Normal Status Types are:
 `dnd` (Do not Disturb)
 `invisible` (Invisible)
 `online` (Online)
+
+## Events
 
 ### Member Leave Event
 

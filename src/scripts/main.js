@@ -115,37 +115,41 @@ class config {
     /**
      * A Welcome Message (guildMemberAdd Event)
      * Requires a channel id to return the message
-     * @param {string} channel
-     * @param {string} message
-     * @returns {Message}
+     * @param {string} options.channel
+     * @param {string} options.message
      * @example bot.guildMemberAdd({
          channel: "1234567891011",
          message: "{member} Welcome!"
      })
-    */ 
-    guildMemberAdd({ channel, message }) {
-        guildMemberAdd(client, channel, message)
+     */ 
+    guildMemberAdd(options = {}) {
+        const channel = Object.defineProperty(options, 'channel');
+        const message = Object.defineProperty(options, 'message');
+        
+        new guildMemberAdd(channel, message);
     }
     
     /**
      * A leave message (guildMemberRemove Event)
-     * @param {string} channel
-     * @param {string} message
-     * @returns {Message}
+     * @param {string} options.channel
+     * @param {string} options.message
      * @example bot.guildMemberAdd({
          channel: "1234567891011",
          message: "Sad to see you leave {member}.."
      })
-    */ 
-    guildMemberRemove({ channel, message }) {
-        guildMemberRemove(client, channel, message)
+     */ 
+    guildMemberRemove(options = {}) {
+        const channel = Object.defineProperty(options, 'channel');
+        const message = Object.defineProperty(options, 'message');
+        
+        new guildMemberRemove(channel, message);
     }
     
     /**
-    * Executes when a message is updated
-    * @param {string|Channel} channel
-    * @param {string} message
-    */
+     * Executes when a message is updated
+     * @param {string|Channel} channel
+     * @param {string} message
+     */
     MessageUpdate({ channel, message }) {
         new MessageUpdate({
             channel: channel,
@@ -158,7 +162,6 @@ class config {
      * @param {string} name
      * @param {string} code
      * @param {string} [messageReply]
-     * @returns {Message}
      * @example
      * bot.cmd({
          name: 'ping',

@@ -1,11 +1,22 @@
+'use strict';
+
 module.exports = {
     // Main Classes/Functions
     config: require("./scripts/main"),
+    Embed: require('./managers/Embed'),
+    interpreter: require('./scripts/interpreter'),
+    
+    // Events
+    MessageUpdate: require('./events/MessageUpdate'),
+    guildMemberRemove: require('./events/guildMemberRemove'),
+    guildMemberAdd: require('./events/guildMemberAdd'),
+    
+    // Managers
+    EventsManager: require('./managers/EventsManager'),
     ActivityManager: require("./managers/ActivityManager"),
     SlashCommandManager: require('./managers/SlashCommandManager'),
-    Embed: require('./managers/Embed'),
-    MessageUpdate: require('./events/MessageUpdate'),
     ClientError: require('./managers/ClientError'),
-    interpreter: require('./scripts/interpreter'),
-    EventsManager: require('./managers/EventsManager'),
+    
+    // Utils
+    Util: require('./utils/util'),
 };

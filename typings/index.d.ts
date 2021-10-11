@@ -29,11 +29,11 @@ export class config {
     public readonly tag: string | null;
     public activity: ActivityManager;
     public slashCommand: SlashCommandManager;
-    public guildMemberAdd(va: IGuildMember): Message;
-    public guildMemberRemove(va: IGuildMember): Message;
-    public MessageUpdate(va: IGuildMember);
+    public guildMemberAdd(va: IGuildMember): void;
+    public guildMemberRemove(va: IGuildMember): void;
+    public MessageUpdate(va: IEvents): void;
     public cmd(cmd: ICommand): void;
-    public MessageDetect(): Message | null;
+    public MessageDetect(): void;
     public toJSON(): JSON;
 }
 
@@ -49,7 +49,7 @@ export class ActivityManager {
 export class SlashCommandManager {
     public constructor(client: Client);
     public optionTypes: typeof Constants;
-    public detect(slashCommand: string): Promise<Message>;
+    public detect(slashCommand: string): Message;
     public create(command: ISlashCMD): void;
     private readonly _slashName: string;
     private readonly _slashDesc: string;
@@ -86,10 +86,35 @@ export class ClientError extends EventEmitter {
 
 export class interpreter {
     public constructor(client: Client);
+    private _getEmbed(client: Client, command: string): MessageEmbed | null;
+    private _isReply(command: string, client: Client): boolean | null;
+    private readonly code: string;
+    private readonly res: string;
+    private readonly functions: Array<string> | null;
+    private readonly args: Array<string>;
+    private readonly _message: string;
+    private readonly currentCommand: string | null;
+    private _startInterpreter(client: Client): string;
 }
 
 export class EventsManager extends EventEmitter {
     public constructor();
+}
+
+export class guildMemberRemove {
+    public constructor(channel: string, message: string);
+    public message: string;
+    public channel: string;
+}
+
+export class guildMemberAdd {
+    public constructor(channel: string, message: string);
+    public message: string;
+    public channel: string;
+}
+
+export class Util {
+    public static mention(target: string, mentionType: string ): string;
 }
 
 //#endregion
@@ -101,6 +126,11 @@ export interface IConfig {
 }
 
 export interface IGuildMember {
+    channel: Channel;
+    message: Message;
+}
+
+export interface IEvents {
     channel: Channel;
     message: Message;
 }
