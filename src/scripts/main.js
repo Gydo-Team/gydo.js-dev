@@ -115,33 +115,27 @@ class config {
     /**
      * A Welcome Message (guildMemberAdd Event)
      * Requires a channel id to return the message
-     * @param {string} options.channel
-     * @param {string} options.message
+     * @param {string} channel
+     * @param {string} message
      * @example bot.guildMemberAdd({
          channel: "1234567891011",
          message: "{member} Welcome!"
      })
      */ 
-    guildMemberAdd(options = {}) {
-        const channel = Object.defineProperty(options, 'channel');
-        const message = Object.defineProperty(options, 'message');
-        
+    guildMemberAdd({ channel, message }) {
         new guildMemberAdd(channel, message);
     }
     
     /**
      * A leave message (guildMemberRemove Event)
-     * @param {string} options.channel
-     * @param {string} options.message
+     * @param {string} channel
+     * @param {string} message
      * @example bot.guildMemberAdd({
          channel: "1234567891011",
          message: "Sad to see you leave {member}.."
      })
      */ 
-    guildMemberRemove(options = {}) {
-        const channel = Object.defineProperty(options, 'channel');
-        const message = Object.defineProperty(options, 'message');
-        
+    guildMemberRemove({ channel, message }) {
         new guildMemberRemove(channel, message);
     }
     

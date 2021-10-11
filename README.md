@@ -242,8 +242,11 @@ bot.activity.setUserStatus('idle');
 Normal Status Types are:
 
 `idle` (Idle)
+
 `dnd` (Do not Disturb)
+
 `invisible` (Invisible)
+
 `online` (Online)
 
 ## Events

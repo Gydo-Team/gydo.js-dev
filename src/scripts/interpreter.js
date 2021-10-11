@@ -149,10 +149,6 @@ class interpreter {
         } else { 
             return EmbedResult = [];
         }
-        
-        let m = RawEmbedTitle && RawEmbedDescription ? true : false;
-        
-        console.log(m);
     }
     
     /**
