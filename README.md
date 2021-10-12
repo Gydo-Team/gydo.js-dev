@@ -10,7 +10,7 @@
     
     <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Gydo-Team/gydo.js-dev" />
     
-    <img alt="npm" src="https://img.shields.io/npm/dt/gydo.js-dev">
+    <img alt="npm" src="https://img.shields.io/npm/dt/gydo.js-dev" />
   </p>
   <br />
 </div>
