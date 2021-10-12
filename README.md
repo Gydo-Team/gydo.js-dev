@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <img src="https://i.imgur.com/D0F1l8i.png" alt="logo"/>
+    <a href="#"><img src="https://i.imgur.com/D0F1l8i.png" alt="logo"/></a>
     
     <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server" /></a>
     
