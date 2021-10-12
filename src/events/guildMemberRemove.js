@@ -1,18 +1,20 @@
-const client = require('../utils/client');
-
 /**
  * Event for when a memeber leaves, and sends a message if specified
 */
 class guildMemberRemove {
-    constructor(channel, message) {
+    /**
+     * Detects 'guildMemberRemove' Event
+     * @param {string} channel
+     * @param {string} message
+     * @param {Client} client
+     */
+    constructor(channel, message, client) {
+        if(client === null) throw new Error('Client Parameter has no Value')
+        
         if(!message) throw new Error(`NO_LEAVE_MESSAGE_GIVEN`);
             this.message = message;
             
         if(!channel) throw new Error(`NO_LEAVE_MESSAGE_CHANNEL`);
-            
-        if(typeof this.message !== 'string') throw new TypeError(`LEAVE_MESSAGE_NOT_STRING`);
-            
-        if(typeof channel !== 'string') throw new TypeError(`LEAVE_CHANNEL_NOT_VALID`);
         this.channel = channel;
             
         if(this.message == null) return

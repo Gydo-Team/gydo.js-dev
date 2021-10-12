@@ -1,7 +1,7 @@
 {
-  "name": "gydo.js-dev",
-  "version": "2.2.0",
-  "description": "The dev branch of 'gydo-js'",
+  "name": "gydo.js",
+  "version": "1.0.0",
+  "description": "",
   "exports": {
     ".": {
       "require": "./src/index.js"
@@ -20,12 +20,12 @@
     "gydo",
     "discordbot"
   ],
-  "author": "Gydo Team",
+  "author": "John Heinrich",
   "license": "Apache-2.0",
   "dependencies": {
     "chalk": "^4.1.1",
     "discord-api-types": "^0.23.1",
-    "discord.js": "^13.1.0"
+    "discord.js": "^13.2.0"
   },
   "engines": {
     "node": ">=16.6.0"

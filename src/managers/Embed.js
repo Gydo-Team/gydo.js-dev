@@ -12,7 +12,6 @@ client.embedTimestamp = new discord.Collection();
 client.embedAuthor = new discord.Collection();
 client.embedAuthorURL = new discord.Collection();
 client.doesEmbed = new discord.Collection();
-client.embedCMDList = new discord.Collection();
 
 /**
 * Discord Message Embed
@@ -45,9 +44,7 @@ class Embed {
     constructor(cmd, options = { title, author, authorURL, description, footer, fields, color, timestamp }) {
         
         if(!cmd) throw new Error('No Command Specified');
-        
-        const prefix = client.botprefix.get("prefix").toString();
-    
+
         const { title, description, footer, fields, color, timestamp, author, authorURL } = options;
         
         this.cmd = cmd
@@ -68,7 +65,6 @@ class Embed {
         client.embedTimestamp.set(cmd, timestamp);
         client.embedAuthor.set(cmd, author);
         client.embedAuthorURL.set(cmd, authorURL);
-        client.embedCMDList.set(`${prefix}${this.cmd}`, this.cmd)
     }
     
     /** 

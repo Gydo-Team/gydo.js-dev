@@ -30,9 +30,9 @@ class config {
     /**
      * 
      * Simple and needed setup to start the bot
-     * @param {string} token
-     * @param {string} prefix
-     * @param {boolean} manualIntents If you want to manually set intents (not recommended)
+     * @param {string} options.token
+     * @param {string} options.prefix
+     * @param {boolean} options.manualIntents If you want to manually set intents (not recommended)
      * @param {boolean} logEvents If you want to log the events on what ks happening on the bot
      * @example
      * // Example
@@ -42,7 +42,7 @@ class config {
      *     prefix: "!"
      * });
      */
-    constructor ({ token, prefix, manualIntents, logEvents }) {
+    constructor (options = { token, prefix, manualIntents, logEvents }) {
         if(!token) throw new Error(`INVALID_TOKEN`);
 
         if(!prefix) throw new Error(`No Prefix Given!`);
@@ -50,66 +50,66 @@ class config {
         if(typeof token !== 'string') throw new TypeError(`Token must be a string!`);
         if(typeof prefix !== 'string') throw new TypeError(`Prefix NOT a string`)
 
+        /** 
+         * Bot's prefix
+         * @type {string}
+         */
+        this.prefix = prefix;
+
         client.botprefix.set("prefix", this.prefix)
         
         let wantLogged = logEvents ? true : false;
 
         client.login(token);
         client.once('ready', async () => {
-            if(wantLogged === true) console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`));
+            if (wantLogged === true || !wantLogged) console.log(chalk.red(`Bot is Ready! | Logged in as ${client.user.tag}`));
             
             /** 
-            * Client's User Tag
-            * @readonly
-            */
-            this.tag = client.user.tag ?? null;
+             * Bot's token
+             * Never share your bot's token with anyone!
+             * @type {?string}
+             * @private
+             */
+            this.token = token;
             
+            /** 
+             * Client's User Tag
+             * @readonly
+             */
+            this.tag = client.user?.tag ?? null;
+                
             /**
-            * Bot Websocket Ping in Miliseconds 
-            * @type {?number}
-            * @readonly
-            */
+             * Bot Websocket Ping in Miliseconds 
+             * @type {?number}
+             * @readonly
+             */
             this.ping = client.ws.ping ?? null;
-            
+                
             /** 
-            * Bots ID
-            * @type {?Snowflake}
-            * @readonly
-            */
-            this.id = client.user.id ?? null;
+             * Bots ID
+             * @type {?Snowflake}
+             * @readonly
+             */
+            this.id = client.user?.id ?? null;
         });
         
         /**
-        * Activity of your Discord Bot
-        * @type {ActivityManager}
-        */
+         * Activity of your Discord Bot
+         * @type {ActivityManager}
+         */
         this.activity = new ActivityManager(wantLogged);
         
         /**
-        * Slash Commands
-        * @type {SlashCommandManager}
-        */
+         * Slash Commands
+         * @type {SlashCommandManager}
+         */
         this.slashCommand = new SlashCommandManager();
         
         /**
-        * Events Manager for manual Events Managing
-        * @type {EventsManager}
-        */
+         * Events Manager for manual Events Managing
+         * @type {EventsManager}
+         */
         this.events = new EventsManager();
-
-        /** 
-        * Bot's prefix
-        * @type {string}
-        */
-        this.prefix = prefix;
-
-        /** 
-        * Bot's token
-        * Never share your bot's token with anyone!
-        * @type {?string}
-        * @private
-        */
-        this.token = token;
     }
     
     /**
@@ -123,7 +123,7 @@ class config {
      })
      */ 
     guildMemberAdd({ channel, message }) {
-        new guildMemberAdd(channel, message);
+        new guildMemberAdd(channel, message, client);
     }
     
     /**
@@ -136,13 +136,13 @@ class config {
      })
      */ 
     guildMemberRemove({ channel, message }) {
-        new guildMemberRemove(channel, message);
+        new guildMemberRemove(channel, message, client);
     }
     
     /**
-     * Executes when a message is updated
-     * @param {string|Channel} channel
-     * @param {string} message
+     * Executes the command if any when a message is updated
+     * @param {Channel|string} channel
+     * @param {Message|string} message
      */
     MessageUpdate({ channel, message }) {
         new MessageUpdate({
@@ -164,9 +164,9 @@ class config {
      */
     cmd({ name, code, messageReply }) {
         /**
-        * Shows the commands you have put, if there is one
-        * @type {?string}
-        */
+         * Shows the commands you have put, if there is one
+         * @type {?string}
+         */
         this.cmdname = name;
         
         if(!name) throw new Error(`CMD_NAME_EMPTY`)
@@ -182,8 +182,7 @@ class config {
     }
 
     /**
-     * Detects the command
-     * (Must have the right Intents)
+     * Detects the command, if any.
      */
     MessageDetect() {
         new interpreter(client);

@@ -14,8 +14,9 @@ class interpreter {
      * Interpreter
      * @param {Client} client
      */
-    constructor(client) {
-        const s = client.botprefix.get("prefix");
+    constructor(client, prefix) {
+        const getPref = client.botprefix.get("prefix");
+        const s = getPref ? getPref : prefix;
         
         if(client === null) throw new Error('Client Parameter has no value');
 
@@ -103,7 +104,6 @@ class interpreter {
         const RawEmbedTimestamp = client.embedTimestamp.get(command);
         const RawEmbedAuthor = client.embedAuthor.get(command);
         const RawEmbedAuthorURL = client.embedAuthorURL.get(command);
-        const EmbedCMDList = client.embedCMDList.get(command);
             
         let EmbedRaw;
         let EmbedResult;

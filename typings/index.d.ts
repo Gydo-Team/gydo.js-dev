@@ -97,18 +97,16 @@ export class interpreter {
     private _startInterpreter(client: Client): string;
 }
 
-export class EventsManager extends EventEmitter {
-    public constructor();
-}
+export class EventsManager extends EventEmitter {}
 
 export class guildMemberRemove {
-    public constructor(channel: string, message: string);
+    public constructor(channel: string, message: string, client: Client);
     public message: string;
     public channel: string;
 }
 
 export class guildMemberAdd {
-    public constructor(channel: string, message: string);
+    public constructor(channel: string, message: string, client: Client);
     public message: string;
     public channel: string;
 }
@@ -133,8 +131,8 @@ export interface IGuildMember {
 }
 
 export interface IEvents {
-    channel?: Channel;
-    message?: Message;
+    channel?: Channel | string;
+    message?: Message | string;
 }
 
 export type ActivityOptions = 

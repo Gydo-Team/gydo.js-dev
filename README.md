@@ -5,23 +5,16 @@
   </p>
   <p>
     <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server" /></a>
-    <a href="https://npmjs.com/package/gydo.js-dev"><img src="https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm" alt="npm gydo"></a>
-    <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Gydo-Team/gydo.js-dev" >
-    <img alt="npm" src="https://img.shields.io/npm/dt/gydo.js-dev">
+    <a href="https://npmjs.com/package/gydo.js"><img src="https://img.shields.io/npm/v/gydo.js?color=%23acff00&label=gydo.js&logo=npm" alt="npm gydo"></a>
+    <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Gydo-Team/gydo.js" >
+    <img alt="npm" src="https://img.shields.io/npm/dt/gydo.js">
   </p>
   <br />
 </div>
 
-# gydo.js-dev
+# gydo.js
 
-The Dev branch of Gydo-JS
-(Unstable Branch)
-
-It will probably receive quite lots of updates, _but it will be unstable._ Report bugs in our [Discord Server](https://discord.gg/s5UcwZTzKg)
-
-Stable Version: [Main Branch](https://npmjs.com/package/gydo-js)
-
-[Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
+'Gydo-js' is a form of discord.js designed to simplify the process of creating a Discord bot.
 
 ## Table of Contents
 
@@ -58,6 +51,14 @@ const bot = new gydo.config({
     prefix: "<your prefix>"
 });
 
+// Detect Messages
+bot.MessageDetect();
+
+// Ping Command
+bot.cmd({
+    name: "ping",
+    code: "Pong! | $[ping]ms'
+});
 ```
 
 You will automatically have this intents:
@@ -124,8 +125,6 @@ Message sent by user: "!example gydo"
 Output: `gydo`
 
 Raw Args Output: `["gydo"]`
-
-Since this is the Dev branch, there is unfortunately, no documentation for this, _yet._
 
 ### Command Handler
 
@@ -328,7 +327,7 @@ bot.MessageUpdate({
 
 ## Contributing
 
-You can contribute on gydo.js dev branch by making a pull request on our [GitHub Repository](https://github.com/Gydo-Team/gydo.js-dev)
+You can contribute on gydo.js dev branch by making a pull request on our [GitHub Repository](https://github.com/Gydo-Team/gydo.js)
 
 [See Contributing Guide](https://github.com/Gydo-Team/gydo.js-dev/blob/main/docs/CONTRIBUTING.md)
 
@@ -339,6 +338,4 @@ Report the bugs on our Discord Server, and/or to our GitHub Repository.
 
 [Gydo-JS Discord Server](https://discord.gg/s5UcwZTzKg)
 
-[Main Branch](https://npmjs.com/package/gydo-js)
-
-[Github Repo](https://github.com/Gydo-Team/gydo.js-dev)
+[Github Repo](https://github.com/Gydo-Team/gydo.js)
