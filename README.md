@@ -1,13 +1,13 @@
 <div align="center">
   <br />
   <p>
-    <!--<a href="#"><img src="https://i.imgur.com/D0F1l8i.png" alt="logo"/></a> -->
+    <a href="#"><img src="https://i.imgur.com/D0F1l8i.png" alt="logo"/></a>
     
     <a href="https://discord.gg/s5UcwZTzKg"><img src="https://img.shields.io/discord/823028211075383316?label=Gydo-JS%20Server&logo=discord" alt="Discord Server" /></a>
     
     <a href="https://npmjs.com/package/gydo.js-dev"><img src="https://img.shields.io/npm/v/gydo.js-dev?color=%23acff00&label=gydo.js-dev&logo=npm" alt="npm gydo" /></a>
     
-    <a href="https://github.com/Gydo-Team/gydo.js-dev"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Gydo-Team/gydo.js-dev" /></a>
+    <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Gydo-Team/gydo.js-dev" />
     
     <img alt="npm" src="https://img.shields.io/npm/dt/gydo.js-dev">
   </p>
